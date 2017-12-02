@@ -1,0 +1,42 @@
+.particle {
+    position: absolute;
+    display: block;
+    height: 30px;
+    width: 30px;
+    background: #3096ff;
+    opacity: 0;
+}
+
+.fadeUp {
+    animation: fadeUp 15s;
+}
+body {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+* {
+    box-sizing: border-box;
+}
+
+.border-radius {
+    border-radius: .25rem;
+}
+
+@keyframes fadeUp {
+    0% {
+        opacity: 0;
+    }
+    10% {
+        opacity: .75
+    }
+    100% {
+        transform: translate3d(0, 0, 0);
+        opacity: 0;
+    }
+}
