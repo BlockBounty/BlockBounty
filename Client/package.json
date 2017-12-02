@@ -9,7 +9,7 @@
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "build": "node build/build.js",
-    "start:prod": "http-server ./dist -p 8090 -o"
+    "start:prod": "http-server ./dist -p 8090 -o -c-1"
   },
   "author": "",
   "license": "ISC",
