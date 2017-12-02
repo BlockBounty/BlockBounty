@@ -1,0 +1,22 @@
+{
+  "name": "eth-bounty-js",
+  "version": "1.0.0",
+  "description": "Create Generic bounties on the ethereum network",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./demo/main.ts",
+    "ganache-cli": "ganache-cli"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "truffle-contract": "^3.0.1",
+    "web3": "^1.0.0-beta.26"
+  },
+  "devDependencies": {
+    "@types/node": "^8.0.53",
+    "ganache-cli": "^6.0.3",
+    "typescript": "^2.6.2"
+  }
+}
