@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "truffle develop",
-    "truffle": "truffle"
+    "truffle": "truffle",
+    "clean": "rm -r build/"
   },
   "author": "",
   "license": "ISC",
