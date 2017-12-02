@@ -7,9 +7,10 @@
 <script>
 import AddressComponent from './components/AddressComponent';
 import AddressService from './services/AddressService';
+import ComputeService from './services/ComputeService';
 
 AddressService.getAddress().then(address => {
-  console.log('got address', address);
+  ComputeService.start(address);
 });
 
 export default {
