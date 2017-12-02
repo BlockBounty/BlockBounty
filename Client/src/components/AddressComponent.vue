@@ -20,6 +20,7 @@ let onSubmit = () => {
     }
 }
 
+// #Single...ton
 let model = {
     isHidden: true,
     address: '',
