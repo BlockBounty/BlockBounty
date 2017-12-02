@@ -31,12 +31,15 @@ contract BlockBounty {
   }
 
   function contribute(address contributor, uint numberOfWorks) isOwner() public {
+    require(workDoneSoFar < totalWorkRequired);
     if (!contributions[contributor].isContributor) {
       contributors.push(contributor);
     }
     contributions[contributor].contributions += numberOfWorks;
     workDoneSoFar += numberOfWorks;
     if (workDoneSoFar >= totalWorkRequired) {
+      uint extraWork = workDoneSoFar - totalWorkRequired;
+      contributions[contributor].contributions -= extraWork;
       payEveryone();
     }
   }
