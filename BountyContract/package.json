@@ -1,0 +1,16 @@
+{
+  "name": "bountycontract",
+  "version": "1.0.0",
+  "description": "",
+  "main": "truffle.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "truffle develop",
+    "truffle": "truffle"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "truffle": "^4.0.1"
+  }
+}
