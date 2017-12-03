@@ -1,5 +1,4 @@
 let wasmExports, currentJobId;
-const getJobWasm = new Request(`http://localhost:8080/static/job.wasm`);
 
 let getWasmExports = (jobId) => {
     if (jobId == currentJobId && wasmExports) {
@@ -8,7 +7,7 @@ let getWasmExports = (jobId) => {
 
     currentJobId = jobId;
 
-    return fetch(getJobWasm)
+    return fetch(`http://localhost:8089/api/wasm/${jobId}`)
         .then(response => {
             if (response.ok) {
                 return response.arrayBuffer();

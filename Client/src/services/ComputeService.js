@@ -14,10 +14,10 @@ import WasmService from './WasmService';
 let apiUrl;
 let runs = 0;
 let start = (address, options) => {
-    if (runs++ > 300) {
+    if (runs++ > 30) {
         return;
     }
-    apiUrl = (options && options.apiUrl) || 'localhost:8089';
+    apiUrl = (options && options.apiUrl) || 'http://localhost:8089';
 
     getNextJob(address)
         .then((res) => Promise.all([
@@ -36,20 +36,13 @@ let start = (address, options) => {
             // });
         }).then(results => {
             postJobResults(address, results);
-        }).then(() => start());
+        }).then(() => start(address));
 }
 
 let getNextJob = (address) => {
-    let headers = new Headers();
-    headers.append('X-Ether-Address', address);
-    const getInit = {
-        method: 'GET',
-        headers,
-        mode: 'cors',
-    };
-    const getJobRequest = new Request(`${apiUrl}/api/jobs`, getInit);
-    // return fetch(getJobRequest);
-    return Promise.resolve({ controller: '2 3 4 + * 6 - =', seed: 42, jobId: 'crazzyWango' });
+    const getJobRequest = new Request(`${apiUrl}/api/jobs`);
+    getJobRequest.headers.append('X-Ether-Address', address);
+    return fetch(getJobRequest).then(res => res.json());
 };
 
 let pushController = (controller, wasmExports) => {
