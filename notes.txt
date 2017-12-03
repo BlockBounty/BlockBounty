@@ -6,6 +6,11 @@ constructor payable
 createJob(totalWorkRequired)
 contribute(address, numberOfWorks)
 
+contract notes
+===============
+may be a good idea to separate the logic of paying workers
+making a splitter contract that saves off worker's balances and requires them to get them would be good, but it means that workers would need existing funds to send the transaction getting those wages
+
 
 public rest endpoints
 ===============
@@ -16,4 +21,3 @@ GET /jobBytecode/{jobId}
 POST /result/{jobId}
     -header: ethAddress
     -postBody {fitness, workCredits, seed}
-

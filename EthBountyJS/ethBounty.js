@@ -1,7 +1,7 @@
 const contract = require('truffle-contract');
 const abi = require('../BountyContract/build/contracts/BlockBounty.json');
 const Web3 = require('web3');
-const provider = new Web3.providers.HttpProvider("http://127.0.0.1:8545");
+const provider = new Web3.providers.HttpProvider("http://127.0.0.1:9545");
 const myweb3 = new Web3(provider);
 
 let newBounty = () => {

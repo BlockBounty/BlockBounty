@@ -4,7 +4,7 @@
   "description": "",
   "main": "truffle.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "truffle test",
     "start": "truffle develop",
     "truffle": "truffle",
     "clean": "rm -r build/"
@@ -12,6 +12,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "dotenv": "^4.0.0",
+    "jest": "^21.2.1",
     "truffle": "^4.0.1"
   }
 }
