@@ -33,6 +33,7 @@ contract BlockBounty {
   function contribute(address contributor, uint numberOfWorks) isOwner() public {
     require(workDoneSoFar < totalWorkRequired);
     if (!contributions[contributor].isContributor) {
+      contributions[contributor].isContributor = true;
       contributors.push(contributor);
     }
     contributions[contributor].contributions += numberOfWorks;
