@@ -12,8 +12,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "dotenv": "^4.0.0",
-    "jest": "^21.2.1",
     "truffle": "^4.0.1"
   }
 }
