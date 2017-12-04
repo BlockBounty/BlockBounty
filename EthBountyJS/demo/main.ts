@@ -37,6 +37,14 @@ server.route({
     }
 });
 
+server.route({
+    method: 'GET',
+    path: '/api/wasm/{jobId}',
+    handler: (request, reply) => {
+        reply("0x0")
+    }
+})
+
 server.start((err) => {
     if (err) {
         throw err;
