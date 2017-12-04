@@ -23,7 +23,7 @@ server.route({
     method: 'GET',
     path: '/api/jobs',
     handler: (request, reply) => {
-        reply({ jobId: 1, controller: '1 1 +', seed: 1 }});
+        reply({ jobId: 1, controller: '1 1 +', seed: 1 });
     }
 });
 
