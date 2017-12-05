@@ -6,7 +6,7 @@ const Web3 = require('web3');
 const provider = new Web3.providers.HttpProvider("http://127.0.0.1:9545");
 const web3 = new Web3(provider);
 
-EB.newBounty(100, 100);
+EB.newBounty(0, 100, 100);
 
 const server = new Hapi.Server();
 server.connection({ port: 8089, host: 'localhost' });
@@ -31,7 +31,7 @@ server.route({
     method: 'POST',
     path: '/api/results',
     handler: (request, reply) => {
-        EB.contribute(request.headers['X-Ether-Address'], 1).then(res => {
+        EB.contribute(0, request.headers['X-Ether-Address'], 1).then(res => {
             reply('ok');
         })
     }

@@ -11,6 +11,9 @@ contract notes
 may be a good idea to separate the logic of paying workers
 making a splitter contract that saves off worker's balances and requires them to get them would be good, but it means that workers would need existing funds to send the transaction getting those wages
 
+server lib
+=================
+Need a way to deploy contracts on the behalf of the user. This means we would need to take their private keys
 
 public rest endpoints
 ===============
