@@ -11,6 +11,9 @@ contract notes
 may be a good idea to separate the logic of paying workers
 making a splitter contract that saves off worker's balances and requires them to get them would be good, but it means that workers would need existing funds to send the transaction getting those wages
 at gas limit 4712388 without a splitter contract, we are able to pay out about 217 workers.
+when users visit the site, we can react to if they have web3. This pattern may require splitting the contract into multiple contracts
+    -if no web3, they contribute to the automatic payout contract. This contract means payouts happen automatically with automated gas levels
+    -if web3, they get to 1. see their progress and balance in real time by inspecting the blockchain and 2. Withdraw their money as frequently or infrequently as possible
 
 server lib
 =================
