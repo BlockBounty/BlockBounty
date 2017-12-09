@@ -17,7 +17,9 @@ when users visit the site, we can react to if they have web3. This pattern may r
 
 server lib
 =================
-
+Currently, the server is paying the gas fee for every transaction
+    -This means that any user that gives contributions to a contract that has a fallback function that consumes gas can exert extra gas from the server.
+    -This means we could also be attacked by a user splitting all of his contributions across many accounts
 
 public rest endpoints
 ===============
