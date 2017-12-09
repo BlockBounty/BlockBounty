@@ -5,17 +5,23 @@ const Web3 = require('web3');
 var myweb3;
 const BountyContractSchema = contract(abi);
 const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database("db.sqlite3");
-db.run('CREATE TABLE IF NOT EXISTS JOBS (jobId INTEGER PRIMARY KEY, address TEXT)');
+var db;
 
 let ropsten = (cb) => {
+    createDb("ropsten.sqlite3");
     let newProvider = truffleConfig.networks.ropsten.provider();
     configureWithProvider(newProvider, cb);
 };
 
 let local = (cb) => {
+    createDb("local.sqlite3");
     let newProvider = new Web3.providers.HttpProvider("http://127.0.0.1:9545");
     configureWithProvider(newProvider, cb);
+};
+
+let createDb = (dbName) => {
+    db = new sqlite3.Database(dbName);
+    db.run('CREATE TABLE IF NOT EXISTS JOBS (jobId INTEGER PRIMARY KEY, address TEXT)');
 };
 
 let configureWithProvider = (newProvider, cb) => {
