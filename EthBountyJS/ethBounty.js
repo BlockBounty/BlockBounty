@@ -64,9 +64,20 @@ let contribute = (jobId, contributor, numberOfWorksContributed, cb) => {
     });
 };
 
+let getContractAddressForJobId = (jobId, cb) => {
+    db.get('SELECT jobId, address FROM JOBS WHERE jobId = ?', [jobId], (err, row) => {
+        if (err) {
+            console.log("Error getting job");
+            return cb(err);
+        }
+        cb(null, row.address);
+    });
+};
+
 module.exports = {
     newBounty,
     contribute,
     ropsten,
-    local
+    local,
+    getContractAddressForJobId
 };

@@ -3,7 +3,7 @@
 const Hapi = require('hapi');
 const EB = require('../ethBounty');
 
-EB.ropsten(() => {
+EB.local(() => {
     EB.newBounty(0, 100, 100);
 });
 
@@ -44,6 +44,19 @@ server.route({
     path: '/api/wasm/{jobId}',
     handler: (request, reply) => {
         reply("0x0")
+    }
+})
+
+server.route({
+    method: 'GET',
+    path: '/api/contract/{jobId}',
+    handler: (request, reply) => {
+        EB.getContractAddressForJobId(request.params.jobId, (err, address) => {
+            if (err) {
+                return reply('error')
+            }
+            reply(address)
+        });
     }
 })
 
