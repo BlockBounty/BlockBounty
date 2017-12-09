@@ -31,9 +31,12 @@ server.route({
     method: 'POST',
     path: '/api/results',
     handler: (request, reply) => {
-        EB.contribute(0, request.headers['X-Ether-Address'], 1).then(res => {
+        EB.contribute(0, request.headers['X-Ether-Address'], 1, err => {
+            if (err) {
+                return reply('crap');
+            }
             reply('ok');
-        })
+        });
     }
 });
 

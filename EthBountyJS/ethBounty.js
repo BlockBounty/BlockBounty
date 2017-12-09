@@ -8,7 +8,7 @@ BountyContractSchema.setProvider(myweb3.currentProvider);
 BountyContractSchema.defaults({
     from: myweb3.eth.accounts[0],
     gas: 4712388, //a little below prod
-    gasPrice: 30 //realistic prod
+    gasPrice: 100000000000 //realistic prod
 });
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database("db.sqlite3");
@@ -29,7 +29,7 @@ let newBounty = (jobId, totalWorkRequired, totalJobPayout) => {
     });
 };
 
-let contribute = (jobId, contributor, numberOfWorksContributed) => {
+let contribute = (jobId, contributor, numberOfWorksContributed, cb) => {
     db.get('SELECT jobId, address FROM JOBS WHERE jobId = ?', [jobId], (err, row) => {
         if (err) {
             console.log("Error getting job");
@@ -39,8 +39,10 @@ let contribute = (jobId, contributor, numberOfWorksContributed) => {
             return deployedInstance.contribute(contributor, numberOfWorksContributed);
         }).then(response => {
             console.log(numberOfWorksContributed, "contributions credited for user", contributor);
+            cb();
         }).catch(error => {
             console.log(error);
+            cb(error);
         });
     });
 };
