@@ -26,6 +26,7 @@ contract BlockBounty {
   }
 
   function createJob(uint _totalWorkRequired, uint _totalJobPayout) isOwner() payable public {
+    require(_totalJobPayout == msg.value);
     totalWorkRequired = _totalWorkRequired;
     totalJobPayout = _totalJobPayout;
   }
