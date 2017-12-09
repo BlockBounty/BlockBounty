@@ -3,8 +3,9 @@
 const Hapi = require('hapi');
 const EB = require('../ethBounty');
 
-EB.ropsten();
-EB.newBounty(0, 100, 100);
+EB.ropsten(() => {
+    EB.newBounty(0, 100, 100);
+});
 
 const server = new Hapi.Server();
 server.connection({ port: 8089, host: 'localhost' });

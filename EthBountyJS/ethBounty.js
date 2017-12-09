@@ -8,25 +8,26 @@ const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database("db.sqlite3");
 db.run('CREATE TABLE IF NOT EXISTS JOBS (jobId INTEGER PRIMARY KEY, address TEXT)');
 
-let ropsten = () => {
+let ropsten = (cb) => {
     let newProvider = truffleConfig.networks.ropsten.provider();
-    configureWithProvider(newProvider);
+    configureWithProvider(newProvider, cb);
 };
 
-let local = () => {
+let local = (cb) => {
     let newProvider = new Web3.providers.HttpProvider("http://127.0.0.1:9545");
-    configureWithProvider(newProvider);
+    configureWithProvider(newProvider, cb);
 };
 
-let configureWithProvider = (newProvider) => {
+let configureWithProvider = (newProvider, cb) => {
     myweb3 = new Web3(newProvider);
     BountyContractSchema.setProvider(myweb3.currentProvider);
     myweb3.eth.getAccounts((err, accounts) => {
         BountyContractSchema.defaults({
             from: accounts[0],
-            gas: 4712388, //a little below prod
+            gas: 4512388, //a little below prod
             gasPrice: 100000000000 //realistic prod
         });
+        cb();
     });
 };
 
