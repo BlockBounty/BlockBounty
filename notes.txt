@@ -1,10 +1,9 @@
-mapping (address => uint)
-
 public contract methods
 ================
-constructor payable
-createJob(totalWorkRequired)
+constructor
+createJob(numberOfJobs, totalWorkRequired) payable
 contribute(address, numberOfWorks)
+destroy(address)
 
 contract notes
 ===============
