@@ -2,10 +2,8 @@
 
 const Hapi = require('hapi');
 const EB = require('../ethBounty');
-const Web3 = require('web3');
-const provider = new Web3.providers.HttpProvider("http://127.0.0.1:9545");
-const web3 = new Web3(provider);
 
+EB.ropsten();
 EB.newBounty(0, 100, 100);
 
 const server = new Hapi.Server();
@@ -31,9 +29,9 @@ server.route({
     method: 'POST',
     path: '/api/results',
     handler: (request, reply) => {
-        EB.contribute(0, request.headers['X-Ether-Address'], 1, err => {
-            if (err) {
-                return reply('crap');
+        EB.contribute(0, request.headers['X-Ether-Address'], 100, error => {
+            if (error) {
+                return reply(error);
             }
             reply('ok');
         });

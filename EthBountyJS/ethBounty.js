@@ -1,18 +1,34 @@
+const truffleConfig = require('../BountyContract/truffle.js');
 const contract = require('truffle-contract');
 const abi = require('../BountyContract/build/contracts/BlockBounty.json');
 const Web3 = require('web3');
-const provider = new Web3.providers.HttpProvider("http://127.0.0.1:9545");
-const myweb3 = new Web3(provider);
+var myweb3;
 const BountyContractSchema = contract(abi);
-BountyContractSchema.setProvider(myweb3.currentProvider);
-BountyContractSchema.defaults({
-    from: myweb3.eth.accounts[0],
-    gas: 4712388, //a little below prod
-    gasPrice: 100000000000 //realistic prod
-});
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database("db.sqlite3");
 db.run('CREATE TABLE IF NOT EXISTS JOBS (jobId INTEGER PRIMARY KEY, address TEXT)');
+
+let ropsten = () => {
+    let newProvider = truffleConfig.networks.ropsten.provider();
+    configureWithProvider(newProvider);
+};
+
+let local = () => {
+    let newProvider = new Web3.providers.HttpProvider("http://127.0.0.1:9545");
+    configureWithProvider(newProvider);
+};
+
+let configureWithProvider = (newProvider) => {
+    myweb3 = new Web3(newProvider);
+    BountyContractSchema.setProvider(myweb3.currentProvider);
+    myweb3.eth.getAccounts((err, accounts) => {
+        BountyContractSchema.defaults({
+            from: accounts[0],
+            gas: 4712388, //a little below prod
+            gasPrice: 100000000000 //realistic prod
+        });
+    });
+};
 
 //NOTE: one time I called newBounty with the wrong number of arguments. It threw  Error: Invalid number of arguments to Solidity function. It was wrong in my js code, having nothing to do with solidity. File a bug
 let newBounty = (jobId, totalWorkRequired, totalJobPayout) => {
@@ -49,5 +65,7 @@ let contribute = (jobId, contributor, numberOfWorksContributed, cb) => {
 
 module.exports = {
     newBounty,
-    contribute
+    contribute,
+    ropsten,
+    local
 };
