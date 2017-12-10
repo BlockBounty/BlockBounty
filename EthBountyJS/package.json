@@ -2,6 +2,7 @@
   "name": "@blockbounty/eth-bounty",
   "version": "0.1.0",
   "description": "Create Generic bounties on the ethereum network",
+  "main": "ethBounty.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "(cd ../BountyContract/ && truffle compile && cp build/contracts/BlockBounty.json ../EthBountyJS) && node ./demo/main.ts",
