@@ -36,7 +36,7 @@ let configureWithProvider = (newProvider, cb) => {
     });
 };
 
-let newBounty = (jobId, totalWorkRequired, totalJobPayout) => {
+let newBounty = (jobId, totalWorkRequired, totalJobPayout, cb) => {
     BountyContractSchema.new().then(deployedInstance => {
         console.log("deployed at address", deployedInstance.address);
         return Promise.all([
@@ -45,8 +45,10 @@ let newBounty = (jobId, totalWorkRequired, totalJobPayout) => {
         ]);
     }).then(response => {
         console.log("'starting job' tx included in block:", response[1].receipt.blockNumber);
+        cb();
     }).catch(error => {
         console.log(error);
+        cb(error);
     });
 };
 
