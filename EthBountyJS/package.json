@@ -1,23 +1,21 @@
 {
-  "name": "eth-bounty-js",
-  "version": "1.0.0",
+  "name": "@blockbounty/eth-bounty",
+  "version": "0.1.0",
   "description": "Create Generic bounties on the ethereum network",
-  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "(cd ../BountyContract/ && truffle compile && cp build/contracts/BlockBounty.json ../EthBountyJS) && node ./demo/main.ts",
     "ganache-cli": "ganache-cli"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "macrochip",
   "dependencies": {
-    "hapi": "^16.6.2",
     "sqlite3": "^3.1.13",
     "truffle-contract": "^3.0.1",
     "web3": "0.19.0"
   },
   "devDependencies": {
     "@types/node": "^8.0.53",
+    "hapi": "^16.6.2",
     "ganache-cli": "^6.0.3",
     "typescript": "^2.6.2"
   }
