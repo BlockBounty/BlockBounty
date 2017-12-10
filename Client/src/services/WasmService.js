@@ -14,17 +14,17 @@ let getWasmExports = (jobId) => {
             } else {
                 throw new Error('Failed to get a job');
             }
-        })
-        .then(buffer => {
-            return WebAssembly.compile(buffer);
+            // })
+            // .then(buffer => {
+            //     return WebAssembly.compile(buffer);
         })
         .then(wasmModule => {
             return WebAssembly.instantiate(wasmModule, {
                 memory: new WebAssembly.Memory({ initial: 3 })
             });
         })
-        .then(wasmInstance => {
-            wasmExports = wasmInstance.exports;
+        .then(results => {
+            wasmExports = results.instance.exports;
             return wasmExports;
         });
 }
