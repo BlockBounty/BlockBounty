@@ -1,4 +1,3 @@
-const truffleConfig = require('../BountyContract/truffle.js');
 const contract = require('truffle-contract');
 const abi = require('../BountyContract/build/contracts/BlockBounty.json');
 const Web3 = require('web3');
@@ -7,14 +6,14 @@ const BountyContractSchema = contract(abi);
 const sqlite3 = require('sqlite3').verbose();
 var db;
 
-let ropsten = (cb) => {
-    createDb("ropsten.sqlite3");
+let ropsten = (dbpath, truffleConfig, cb) => {
+    createDb(dbpath + "ropsten.sqlite3");
     let newProvider = truffleConfig.networks.ropsten.provider();
     configureWithProvider(newProvider, cb);
 };
 
-let local = (cb) => {
-    createDb("local.sqlite3");
+let local = (dbpath, cb) => {
+    createDb(dbpath + "local.sqlite3");
     let newProvider = new Web3.providers.HttpProvider("http://127.0.0.1:9545");
     configureWithProvider(newProvider, cb);
 };

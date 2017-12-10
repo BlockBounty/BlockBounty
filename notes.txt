@@ -20,6 +20,7 @@ server lib
 =================
 Currently, the server is paying the gas fee for every transaction
     -This means that any user that gives contributions to a contract that has a fallback function that consumes gas can exert extra gas from the server.
+        -it could also cause an exception and stop paying everyone
     -This means we could also be attacked by a user splitting all of his contributions across many accounts
 
 public rest endpoints

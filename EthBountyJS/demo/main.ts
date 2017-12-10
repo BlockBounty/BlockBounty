@@ -3,7 +3,7 @@
 const Hapi = require('hapi');
 const EB = require('../ethBounty');
 
-EB.local(() => {
+EB.local('./', () => {
     EB.newBounty(0, 100, 100);
 });
 
