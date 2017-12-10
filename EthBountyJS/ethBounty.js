@@ -37,7 +37,6 @@ let configureWithProvider = (newProvider, cb) => {
     });
 };
 
-//NOTE: one time I called newBounty with the wrong number of arguments. It threw  Error: Invalid number of arguments to Solidity function. It was wrong in my js code, having nothing to do with solidity. File a bug
 let newBounty = (jobId, totalWorkRequired, totalJobPayout) => {
     BountyContractSchema.new().then(deployedInstance => {
         console.log("deployed at address", deployedInstance.address);

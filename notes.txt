@@ -9,6 +9,8 @@ contract notes
 ===============
 may be a good idea to separate the logic of paying workers
 making a splitter contract that saves off worker's balances and requires them to get them would be good, but it means that workers would need existing funds to send the transaction getting those wages
+    -could do a system where if any user wants to pay the gas, they can pay everyone out
+    -could do a round robin system where each completed job pays out one person and everyone else's gets banked
 at gas limit 4712388 without a splitter contract, we are able to pay out about 217 workers.
 when users visit the site, we can react to if they have web3. This pattern may require splitting the contract into multiple contracts
     -if no web3, they contribute to the automatic payout contract. This contract means payouts happen automatically with automated gas levels
@@ -29,3 +31,13 @@ GET /jobBytecode/{jobId}
 POST /result/{jobId}
     -header: ethAddress
     -postBody {fitness, workCredits, seed}
+
+problems
+===============
+I encountered many problems while developing. Many of these may have been due to me not fully understanding truffle
+    -an incorrect number of parameters on a function in my code is thrown as an incorrect number of solidity
+        -one time I called newBounty with the wrong number of arguments. It threw  Error: Invalid number of arguments to Solidity function. It was wrong in my js code, having nothing to do with solidity. File a bug
+    -knowing what gasLimit to put
+We had to constantly think of attack vectors.
+Thinking in a decentralized fashion. We had many long conversations about how certain things could be implemented
+    -Knowing how to pay out users properly
