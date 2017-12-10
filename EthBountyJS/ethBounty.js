@@ -4,15 +4,20 @@ const Web3 = require('web3');
 var myweb3;
 const BountyContractSchema = contract(abi);
 const sqlite3 = require('sqlite3').verbose();
+const fs = require('fs');
 var db;
+var jobId = 0;
+var dbpath;
 
-let ropsten = (dbpath, truffleConfig, cb) => {
+let ropsten = (_dbpath, truffleConfig, cb) => {
+    dbpath = _dbpath;
     createDb(dbpath + "ropsten.sqlite3");
     let newProvider = truffleConfig.networks.ropsten.provider();
     configureWithProvider(newProvider, cb);
 };
 
-let local = (dbpath, cb) => {
+let local = (_dbpath, cb) => {
+    dbpath = _dbpath;
     createDb(dbpath + "local.sqlite3");
     let newProvider = new Web3.providers.HttpProvider("http://127.0.0.1:9545");
     configureWithProvider(newProvider, cb);
@@ -32,11 +37,16 @@ let configureWithProvider = (newProvider, cb) => {
             gas: 4512388, //a little below prod
             gasPrice: 100000000000 //realistic prod
         });
-        cb();
+        fs.readFile(dbpath + "number.txt", 'utf8', (err, data) => {
+          if (!err && data) {
+            jobId = parseInt(data, 10);
+          }
+          cb();
+        });
     });
 };
 
-let newBounty = (jobId, totalWorkRequired, totalJobPayout, cb) => {
+let newBounty = (totalWorkRequired, totalJobPayout, cb) => {
     BountyContractSchema.new().then(deployedInstance => {
         console.log("deployed at address", deployedInstance.address);
         return Promise.all([
@@ -45,7 +55,8 @@ let newBounty = (jobId, totalWorkRequired, totalJobPayout, cb) => {
         ]);
     }).then(response => {
         console.log("'starting job' tx included in block:", response[1].receipt.blockNumber);
-        cb();
+        fs.writeFileSync(dbpath + "number.txt", ++jobId);
+        cb(null, jobId - 1);
     }).catch(error => {
         console.log(error);
         cb(error);

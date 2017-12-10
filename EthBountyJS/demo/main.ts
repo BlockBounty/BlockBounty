@@ -3,10 +3,6 @@
 const Hapi = require('hapi');
 const EB = require('../ethBounty');
 
-EB.local('./', () => {
-    EB.newBounty(0, 100, 100);
-});
-
 const server = new Hapi.Server();
 server.connection({ port: 8089, host: 'localhost' });
 
@@ -60,9 +56,17 @@ server.route({
     }
 })
 
-server.start((err) => {
-    if (err) {
-        throw err;
-    }
-    console.log(`Server running at: ${server.info.uri}`);
+EB.local('./', () => {
+    EB.newBounty(100, 100, (error, jobId) => {
+        if (error) {
+            throw error;
+        }
+        console.log("jobId", jobId);
+        server.start((err) => {
+            if (err) {
+                throw err;
+            }
+            console.log(`Server running at: ${server.info.uri}`);
+        });
+    });
 });
