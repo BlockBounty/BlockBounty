@@ -1,5 +1,5 @@
 const contract = require('truffle-contract');
-const abi = require('../BountyContract/build/contracts/BlockBounty.json');
+const abi = require('./BlockBounty.json');
 const Web3 = require('web3');
 var myweb3;
 const BountyContractSchema = contract(abi);

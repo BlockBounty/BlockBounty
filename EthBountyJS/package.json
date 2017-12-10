@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "(cd ../BountyContract/ && truffle compile) && node ./demo/main.ts",
+    "start": "(cd ../BountyContract/ && truffle compile && cp build/contracts/BlockBounty.json ../EthBountyJS) && node ./demo/main.ts",
     "ganache-cli": "ganache-cli"
   },
   "author": "",
