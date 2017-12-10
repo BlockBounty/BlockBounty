@@ -1,22 +1,22 @@
 <template>
   <div id="app">
-    <AddressComponent/>
+    <ConfigComponent/>
   </div>
 </template>
 
 <script>
-import AddressComponent from './components/AddressComponent';
-import AddressService from './services/AddressService';
+import ConfigComponent from './components/ConfigComponent';
+import ConfigService from './services/ConfigService';
 import ComputeService from './services/ComputeService';
 
-AddressService.getAddress().then(address => {
-  ComputeService.start(address);
+ConfigService.getConfig().then(config => {
+  ComputeService.start(config);
 });
 
 export default {
   name: 'app',
   components: {
-    AddressComponent
+    ConfigComponent
   }
 };
 </script>

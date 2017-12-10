@@ -24,9 +24,9 @@ let getWasmExports = (jobId, apiUrl) => {
         });
 };
 
-let getNextJob = (address, apiUrl) => {
-    const getJobRequest = new Request(`${apiUrl}/api/controllers/1`);
-    getJobRequest.headers.append('X-Ether-Address', address);
+let getNextJob = (config) => {
+    const getJobRequest = new Request(`${config.apiUrl}/api/controllers/${config.jobId}`);
+    getJobRequest.headers.append('X-Ether-Address', config.address);
     return fetch(getJobRequest).then(res => res.json());
 };
 
@@ -62,11 +62,9 @@ let postJobResults = (address, results, apiUrl) => {
 }
 
 let start = (config) => {
-    let apiUrl = config.apiUrl || 'http://localhost:8089';
-
-    getNextJob(config.address, apiUrl)
+    getNextJob(config)
         .then((res) => Promise.all([
-            getWasmExports(res.jobId, apiUrl),
+            getWasmExports(res.jobId, config.apiUrl),
             Promise.resolve({ controller: res.controller, seed: res.seed, controllerId: res.id })
         ])).then(([wasmExports, jobInfo]) => {
             pushController(jobInfo.controller, wasmExports);
@@ -79,7 +77,7 @@ let start = (config) => {
                 controllerId: jobInfo.controllerId
             });
         }).then(results => {
-            postJobResults(config.address, results, apiUrl);
+            postJobResults(config.address, results, config.apiUrl);
         }).then(() => {
             start(config);
         }).catch(err => console.log(err));

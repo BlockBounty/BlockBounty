@@ -1,12 +1,17 @@
 <template>
-    <div class="card border-radius" :class="{hidden: isHidden}">
+    <div class="card border-radius" :class="{hidden: isHidden, advanced: isAdvanced}">
+        <div class="advanced-button border-radius" @click="toggleAdvanced"></div>
         <div class="header">Enter your Ethereum address</div>
         <input class="border-radius" type="text" @keyup.enter="onSubmit" v-model="address" />
+        <div class="header">Enter JobId you want to contribute to</div>
+        <input class="border-radius" type="text" @keyup.enter="onSubmit" v-model="jobId" />
+        <div class="header">Enter API Server Url</div>
+        <input class="border-radius" type="text" @keyup.enter="onSubmit" v-model="apiUrl" />
     </div>
 </template>
 
 <script>
-import AddressService from '../services/AddressService';
+import ConfigService from '../services/ConfigService';
 let promptResolver;
 let isAddressValid = (address) => {
     return true;
@@ -14,27 +19,39 @@ let isAddressValid = (address) => {
 
 let onSubmit = () => {
     if (promptResolver && isAddressValid(model.address)) {
-        promptResolver(model.address);
+        promptResolver({
+            address: model.address,
+            jobId: model.jobId,
+            apiUrl: model.apiUrl
+        });
         promptResolver = null;
         model.isHidden = true;
     }
 }
 
+let toggleAdvanced = () => {
+    model.isAdvanced = !model.isAdvanced;
+}
+
 // #Single...ton
 let model = {
     isHidden: true,
+    isAdvanced: false,
     address: '',
-    onSubmit
+    jobId: 1,
+    apiUrl: 'http://localhost:8089',
+    onSubmit,
+    toggleAdvanced
 };
 
-AddressService.listenForPrompt(() => new Promise((res, rej) => {
+ConfigService.listenForPrompt(() => new Promise((res, rej) => {
     promptResolver = res;
     model.isHidden = false;
 }));
 
 
 export default {
-    name: 'AddressComponent',
+    name: 'ConfigComponent',
     data: () => {
         return model;
     }
@@ -42,12 +59,24 @@ export default {
 </script>
 
 <style scoped>
+.advanced-button {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    height: 2rem;
+    width: 2rem;
+    background: #222f54;
+}
+
 .card {
+    position: relative;
     background: rgba(63, 79, 128, .8);
     color: #e3e5eb;
+    overflow: hidden;
     padding: 1rem;
     margin: auto;
     width: 80vw;
+    height: 7rem;
     box-shadow: 2px 2px 1.5rem 1px rgba(0, 0, 0, .23);
     transition: .5s ease;
 }
@@ -55,6 +84,10 @@ export default {
 .card.hidden {
     transform: translate3d(0, 75vh, 0);
     transition: .5s ease;
+}
+
+.card.advanced {
+    height: 19rem;
 }
 
 .header {
@@ -71,6 +104,7 @@ input {
     padding: .5rem;
     color: #ddd;
     border: none;
+    margin-bottom: 1rem;
 }
 
 input:active,

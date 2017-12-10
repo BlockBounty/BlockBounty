@@ -1,6 +1,6 @@
 let worker;
-let start = (address, options) => {
-    worker.postMessage(['START', { address }]);
+let start = (config) => {
+    worker.postMessage(['START', config]);
 }
 
 let init = () => {
