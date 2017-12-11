@@ -114,14 +114,13 @@ let contributeIfNecessary = (jobId, contributor, numberOfWorksContributed, cb) =
                     return;
                 }
                 console.log('sending to blockchain');
+                cb();
                 BountyContractSchema.at(row.address).then(deployedInstance => {
                     return deployedInstance.contribute(contributor, numberOfWorksContributed);
                 }).then(response => {
                     console.log(numberOfWorksContributed, "contributions credited for user", contributor);
-                    cb();
                 }).catch(error => {
-                    console.log(error);
-                    cb(error);
+                    throw error;
                 });
             });
         });
