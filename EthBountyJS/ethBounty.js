@@ -55,7 +55,7 @@ let newBounty = (totalWorkRequired, totalJobPayout, cb) => {
     BountyContractSchema.new().then(deployedInstance => {
         console.log("deployed at address", deployedInstance.address);
         return Promise.all([
-            db.run('INSERT INTO JOBS (jobId, address) VALUES (?, ?)', jobId, deployedInstance.address),
+            db.run('INSERT INTO JOBS (jobId, address) VALUES (?, ?)', jobId, deployedInstance.address), //WARN: this isn't a promise so what is it doing?
             deployedInstance.createJob(totalWorkRequired, totalJobPayout, { value: totalJobPayout })
         ]);
     }).then(response => {

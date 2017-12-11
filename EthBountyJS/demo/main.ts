@@ -5,6 +5,7 @@ const EB = require('../ethBounty');
 
 const server = new Hapi.Server();
 server.connection({ port: 8089, host: 'localhost' });
+var globalJobId;
 
 server.route({
     method: 'GET',
@@ -18,7 +19,7 @@ server.route({
     method: 'GET',
     path: '/api/jobs',
     handler: (request, reply) => {
-        reply({ jobId: 1, controller: '1 1 +', seed: 1 });
+        reply({ jobId: globalJobId, controller: '1 1 +', seed: 1 });
     }
 });
 
@@ -26,7 +27,7 @@ server.route({
     method: 'POST',
     path: '/api/results',
     handler: (request, reply) => {
-        EB.contribute(0, request.headers['x-ether-address'], 50, error => {
+        EB.contribute(globalJobId, request.headers['x-ether-address'], 50, error => {
             if (error) {
                 return reply(error);
             }
@@ -62,6 +63,7 @@ EB.local('./', () => {
             throw error;
         }
         console.log("jobId", jobId);
+        globalJobId = jobId;
         server.start((err) => {
             if (err) {
                 throw err;
