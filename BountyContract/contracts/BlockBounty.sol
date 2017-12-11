@@ -49,7 +49,7 @@ contract BlockBounty {
   function payEveryone() private {
     for (uint i = 0; i < contributors.length; i++) {
       address contributor = contributors[i];
-      contributor.transfer(totalJobPayout * contributions[contributor].contributions / totalWorkRequired); //WARN: integer math and fees lead to errors
+      contributor.transfer(totalJobPayout * contributions[contributor].contributions / totalWorkRequired); //WARN: integer math leads to errors
     }
   }
 
