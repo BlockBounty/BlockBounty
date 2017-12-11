@@ -77,6 +77,7 @@ let start = (config) => {
                 controllerId: jobInfo.controllerId
             });
         }).then(results => {
+            postMessage(results);
             postJobResults(config.address, results, config.apiUrl);
         }).then(() => {
             start(config);

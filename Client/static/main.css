@@ -28,6 +28,10 @@ body {
     border-radius: .25rem;
 }
 
+.flex {
+    flex: 1 1 0;
+}
+
 @keyframes fadeUp {
     0% {
         opacity: 0;
