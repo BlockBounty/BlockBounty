@@ -65,7 +65,7 @@ let start = (config) => {
     getNextJob(config)
         .then((res) => Promise.all([
             getWasmExports(res.jobId, config.apiUrl),
-            Promise.resolve({ controller: res.controller, seed: res.seed, controllerId: res.id })
+            Promise.resolve({ controller: res.controller, seed: res.seed, controllerId: res.id, jobId: res.jobId })
         ])).then(([wasmExports, jobInfo]) => {
             pushController(jobInfo.controller, wasmExports);
             wasmExports.init(jobInfo.seed);
@@ -73,7 +73,7 @@ let start = (config) => {
                 fitness: wasmExports.getFitness(),
                 steps: wasmExports.getSteps(),
                 seed: jobInfo.seed,
-                jobId: 1,
+                jobId: jobInfo.jobId,
                 controllerId: jobInfo.controllerId
             });
         }).then(results => {
