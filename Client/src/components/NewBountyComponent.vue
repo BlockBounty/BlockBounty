@@ -19,10 +19,26 @@
     <div class="card border-radius created-job" v-else>
         You created job with the id:
         <span>{{jobId}}</span>
+        <div class="fitness-table">
+            <input v-model="jobId" type="number"/>
+            <button @click="getTopFitness">Get top fitness</button>
+            <div>
+                {{topFitness}}
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
+
+let getTopFitness = () => {
+    fetch(`http://localhost:8089/api/jobs/${model.jobId}/progress`).then(res => {
+        return res.json();
+    }).then(json => {
+        model.topFitness = json;
+    })
+};
+
 let model = {
     submitBounty: () => {
         fetch('http://localhost:8089/api/jobs', { method: 'POST' })
@@ -30,6 +46,8 @@ let model = {
             .then(json => model.jobId = json.jobId);
     },
     jobId: null,
+    getTopFitness,
+    topFitness: ""
 };
 
 export default {

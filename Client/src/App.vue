@@ -9,13 +9,6 @@
       <div class="flex"></div>
       <div class="new-bounty border-radius" @click="showCreateBounty">+ Bounty</div>
     </div>
-    <div class="fitness-table">
-        <input v-model="jobId" type="number"/>
-        <button @click="getTopFitness">Get top fitness</button>
-        <div>
-            {{topFitness}}
-        </div>
-    </div>
     <ConfigComponent v-if="showingProgress"/>
     <NewBountyComponent v-else/>
     <ProgressComponent/>
@@ -38,15 +31,7 @@ let model = {
     showCreateBounty: () => {
         model.showingProgress = !model.showingProgress;
     },
-    jobId: 0,
-    topFitness: "",
-    getTopFitness: () => {
-        fetch(`localhost:8089/api/jobs/${model.jobId}/progress`).then(res => {
-            return res.json();
-        }).then(json => {
-            model.topFitness = json;
-        })
-    }
+    jobId: 0
 };
 
 export default {
@@ -77,16 +62,6 @@ export default {
   background: linear-gradient(45deg, #7467dc, #222a4f);
   overflow: hidden;
   color: #222f54;
-}
-
-.fitness-table {
-    position: absolute;
-    top: 10rem;
-    left: 10rem;
-    font-size: 1.5rem;
-    font-weight: 100;
-    margin-bottom: 1rem;
-    color: white;
 }
 
 .logo-container {
