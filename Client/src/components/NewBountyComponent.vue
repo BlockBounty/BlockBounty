@@ -1,5 +1,5 @@
 <template>
-    <div class="card border-radius">
+    <div class="card border-radius" v-if="jobId == null">
         <div>
             <div>Number of works to purchase:</div>
             <input style="display: block" type="number" />
@@ -16,19 +16,26 @@
             <button class="submit-bounty border-radius" @click="submitBounty">Submit bounty</button>
         </div>
     </div>
+    <div class="card border-radius created-job" v-else>
+        You created job with the id:
+        <span>{{jobId}}</span>
+    </div>
 </template>
 
 <script>
 let model = {
+    submitBounty: () => {
+        fetch('http://localhost:8089/api/jobs', { method: 'POST' })
+            .then(res => res.json())
+            .then(json => model.jobId = json.jobId);
+    },
+    jobId: null,
 };
 
 export default {
     name: 'NewBountyComponent',
     data: () => {
         return model;
-    },
-    submitBounty: () => {
-        
     }
 }
 </script>
@@ -83,5 +90,10 @@ div {
     padding: .65rem;
     box-shadow: 2px 2px 1.5rem 1px rgba(0, 0, 0, .23);
     cursor: pointer;
+}
+
+.created-job {
+    font-size: 2rem;
+    text-align: center;
 }
 </style>
