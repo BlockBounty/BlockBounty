@@ -6,8 +6,11 @@
         <div>B</div>
       </div>
       <div class="name">Block Bounty</div>
+      <div class="flex"></div>
+      <div class="new-bounty border-radius" @click="showCreateBounty">+ Bounty</div>
     </div>
-    <ConfigComponent/>
+    <ConfigComponent v-if="showingProgress"/>
+    <NewBountyComponent v-else/>
     <ProgressComponent/>
   </div>
 </template>
@@ -17,16 +20,28 @@ import ConfigComponent from './components/ConfigComponent';
 import ProgressComponent from './components/ProgressComponent';
 import ConfigService from './services/ConfigService';
 import ComputeService from './services/ComputeService';
+import NewBountyComponent from './components/NewBountyComponent';
 
 ConfigService.getConfig().then(config => {
   ComputeService.start(config);
 });
 
+let model = {
+    showingProgress: true,
+    showCreateBounty: () => {
+        model.showingProgress = !model.showingProgress;
+    }
+};
+
 export default {
   name: 'app',
   components: {
     ConfigComponent,
-    ProgressComponent
+    ProgressComponent,
+    NewBountyComponent
+  },
+  data: () => {
+      return model;
   }
 };
 </script>
@@ -55,6 +70,7 @@ export default {
   display: flex;
   width: calc(100vw - 2rem);
   height: 6rem;
+  align-items: center;
 }
 
 .bb-logo {
@@ -84,5 +100,17 @@ export default {
 .name {
   font-size: 4rem;
   color: #d8d8e4;
+}
+
+.new-bounty {
+    height: 3.75rem;
+    width: 12rem;
+    background: rgba(63, 79, 128, .8);
+    color: #d8d8e4;
+    text-align: center;
+    font-size: 2rem;
+    padding: .65rem;
+    box-shadow: 2px 2px 1.5rem 1px rgba(0, 0, 0, .23);
+    cursor: pointer;
 }
 </style>
