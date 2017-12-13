@@ -20,7 +20,7 @@
         You created job with the id:
         <span>{{jobId}}</span>
         <div class="fitness-table">
-            <input v-model="jobId" type="number"/>
+            <input v-model="jobId" type="number" />
             <button @click="getTopFitness">Get top fitness</button>
             <div>
                 {{topFitness}}
@@ -113,5 +113,11 @@ div {
 .created-job {
     font-size: 2rem;
     text-align: center;
+    max-height: 50vh;
+    overflow-y: auto;
+}
+
+.fitness-table {
+    font-size: 1rem;
 }
 </style>

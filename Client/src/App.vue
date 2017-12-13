@@ -9,9 +9,9 @@
       <div class="flex"></div>
       <div class="new-bounty border-radius" @click="showCreateBounty">+ Bounty</div>
     </div>
-    <ConfigComponent v-if="showingProgress"/>
-    <NewBountyComponent v-else/>
-    <ProgressComponent/>
+    <ConfigComponent v-if="showingProgress" />
+    <ProgressComponent v-if="showingProgress" />
+    <NewBountyComponent v-if="!showingProgress" />
   </div>
 </template>
 
@@ -27,11 +27,11 @@ ConfigService.getConfig().then(config => {
 });
 
 let model = {
-    showingProgress: true,
-    showCreateBounty: () => {
-        model.showingProgress = !model.showingProgress;
-    },
-    jobId: 0
+  showingProgress: true,
+  showCreateBounty: () => {
+    model.showingProgress = !model.showingProgress;
+  },
+  jobId: 0
 };
 
 export default {
@@ -42,7 +42,7 @@ export default {
     NewBountyComponent
   },
   data: () => {
-      return model;
+    return model;
   }
 };
 </script>
@@ -104,14 +104,14 @@ export default {
 }
 
 .new-bounty {
-    height: 3.75rem;
-    width: 12rem;
-    background: rgba(63, 79, 128, .8);
-    color: #d8d8e4;
-    text-align: center;
-    font-size: 2rem;
-    padding: .65rem;
-    box-shadow: 2px 2px 1.5rem 1px rgba(0, 0, 0, .23);
-    cursor: pointer;
+  height: 3.75rem;
+  width: 12rem;
+  background: rgba(63, 79, 128, .8);
+  color: #d8d8e4;
+  text-align: center;
+  font-size: 2rem;
+  padding: .65rem;
+  box-shadow: 2px 2px 1.5rem 1px rgba(0, 0, 0, .23);
+  cursor: pointer;
 }
 </style>
