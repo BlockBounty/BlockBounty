@@ -57,7 +57,11 @@ server.route({
     }
 })
 
-EB.local('./', () => {
+EB.local({
+    environment: "local",
+    truffleConfig: require('../BountyContract/truffle.js'),
+    dbPath: './'
+}, () => {
     globalJobId = EB.newBounty(100, 100, (error) => {
         if (error) {
             throw error;

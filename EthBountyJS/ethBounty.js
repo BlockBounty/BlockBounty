@@ -10,17 +10,18 @@ var jobId = 0;
 var dbpath;
 const WORK_BUFFER_SIZE = 100;
 
-let ropsten = (_dbpath, truffleConfig, cb) => {
-    dbpath = _dbpath;
-    createDb(dbpath + "ropsten.sqlite3");
-    let newProvider = truffleConfig.networks.ropsten.provider();
-    configureWithProvider(newProvider, cb);
-};
-
-let local = (_dbpath, cb) => {
-    dbpath = _dbpath;
-    createDb(dbpath + "local.sqlite3");
-    let newProvider = new Web3.providers.HttpProvider("http://127.0.0.1:9545");
+let config = (config, cb) => {
+    dbpath = config.dbpath;
+    var newProvider;
+    if (config.environment === "ropsten") {
+        createDb(dbpath + "ropsten.sqlite3");
+        newProvider = config.truffleConfig.networks.ropsten.provider();
+    } else if (config.environment === "local") {
+        createDb(dbpath + "local.sqlite3");
+        newProvider = new Web3.providers.HttpProvider("http://127.0.0.1:9545");
+    } else {
+        return cb("Config must have environment set to either ropsten or local");
+    }
     configureWithProvider(newProvider, cb);
 };
 
@@ -114,7 +115,7 @@ let contributeIfNecessary = (jobId, contributor, numberOfWorksContributed, cb) =
                     cb(err2);
                     return;
                 }
-                console.log('sending to blockchain');
+                console.log('sending to blockchain for jobId', jobId);
                 cb();
                 BountyContractSchema.at(row.address).then(deployedInstance => {
                     return deployedInstance.contribute(contributor, numberOfWorksContributed);
@@ -143,7 +144,6 @@ let getContractAddressForJobId = (jobId, cb) => {
 module.exports = {
     newBounty,
     contribute,
-    ropsten,
-    local,
+    config,
     getContractAddressForJobId
 };
