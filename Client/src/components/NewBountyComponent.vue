@@ -67,7 +67,7 @@ div {
     position: absolute;
     left: 10vw;
     top: calc(50vh - 3.5rem);
-    background: rgba(63, 79, 128, .8);
+    background: rgb(63, 79, 128);
     color: #e3e5eb;
     overflow: hidden;
     padding: 1rem;
@@ -76,6 +76,7 @@ div {
     box-shadow: 2px 2px 1.5rem 1px rgba(0, 0, 0, .23);
     transform: translate3d(0, 0, 0);
     transition: .5s ease;
+    z-index: 5
 }
 
 .card.hidden {

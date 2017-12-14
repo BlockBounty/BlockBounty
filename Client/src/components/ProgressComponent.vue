@@ -46,7 +46,7 @@ export default {
     position: absolute;
     left: 10vw;
     top: calc(50vh - 3.5rem);
-    background: rgba(63, 79, 128, .8);
+    background: rgb(63, 79, 128);
     color: #e3e5eb;
     overflow: hidden;
     padding: 1rem;

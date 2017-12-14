@@ -70,7 +70,7 @@ export default {
 
 .card {
     position: relative;
-    background: rgba(63, 79, 128, .8);
+    background: rgb(63, 79, 128);
     color: #e3e5eb;
     overflow: hidden;
     padding: 1rem;
@@ -79,6 +79,7 @@ export default {
     height: 7rem;
     box-shadow: 2px 2px 1.5rem 1px rgba(0, 0, 0, .23);
     transition: .5s ease;
+    z-index: 5;
 }
 
 .card.hidden {
