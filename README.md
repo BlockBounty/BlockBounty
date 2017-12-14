@@ -10,4 +10,6 @@ This repository contains 3 distinct projects (lumped into one repo for the sake 
  
  Which will compile the source and start a local web server for client development making calls to our deployed api server
  
- 
+ PS.  For an example of what the expected controller's wasm source would look like see wasmInterface.c
+
+ The most important parts are the methods for pushing a controller, init, getFitness and getSteps.  We also provide a random number generator implementation for making fitness evaluations deterministic. These criteria would be verified at bounty submission time.
