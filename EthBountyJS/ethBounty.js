@@ -52,20 +52,21 @@ let newBounty = (totalWorkRequired, totalJobPayout, cb) => {
     if (totalWorkRequired % WORK_BUFFER_SIZE !== 0) {
         return cb('totalWorkRequired needs to be divisible by ' + WORK_BUFFER_SIZE);
     }
+    let myJobId = jobId;
+    jobId++;
+    fs.writeFileSync(dbpath + "number.txt", jobId);
     BountyContractSchema.new().then(deployedInstance => {
         console.log("deployed at address", deployedInstance.address);
-        return Promise.all([
-            db.run('INSERT INTO JOBS (jobId, address) VALUES (?, ?)', jobId, deployedInstance.address), //WARN: this isn't a promise so what is it doing?
-            deployedInstance.createJob(totalWorkRequired, totalJobPayout, { value: totalJobPayout })
-        ]);
+        db.run('INSERT INTO JOBS (jobId, address) VALUES (?, ?)', myJobId, deployedInstance.address);
+        return deployedInstance.createJob(totalWorkRequired, totalJobPayout, { value: totalJobPayout });
     }).then(response => {
-        console.log("'starting job' tx included in block:", response[1].receipt.blockNumber);
-        fs.writeFileSync(dbpath + "number.txt", ++jobId);
-        cb(null, jobId - 1);
+        console.log("'starting job' tx included in block:", response.receipt.blockNumber);
+        cb();
     }).catch(error => {
         console.log(error);
         cb(error);
     });
+    return myJobId;
 };
 
 let contribute = (jobId, contributor, numberOfWorksContributed, cb) => {

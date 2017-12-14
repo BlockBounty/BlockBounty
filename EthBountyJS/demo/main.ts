@@ -58,12 +58,10 @@ server.route({
 })
 
 EB.local('./', () => {
-    EB.newBounty(100, 100, (error, jobId) => {
+    globalJobId = EB.newBounty(100, 100, (error) => {
         if (error) {
             throw error;
         }
-        console.log("jobId", jobId);
-        globalJobId = jobId;
         server.start((err) => {
             if (err) {
                 throw err;
@@ -71,4 +69,5 @@ EB.local('./', () => {
             console.log(`Server running at: ${server.info.uri}`);
         });
     });
+    console.log("jobId", globalJobId);
 });
