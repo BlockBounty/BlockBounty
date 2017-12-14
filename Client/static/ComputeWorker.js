@@ -94,6 +94,10 @@ let start = (config) => {
             postMessage(results);
             postJobResults(config.address, results, config.apiUrl);
         }).then(() => {
+            return new Promise((res) => {
+                setInterval(res, 200);
+            });
+        }).then(() => {
             start(config);
         }).catch(err => console.log(err));
 }
