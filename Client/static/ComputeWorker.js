@@ -31,8 +31,9 @@ let getNextJob = (config) => {
     let fetchJob = (resolver) => {
         fetch(getJobRequest)
             .then(res => res.json())
-            .then(json => res(json))
+            .then(json => resolver(json))
             .catch(err => {
+                console.log(err);
                 console.log("Failed to get a job for jobId: " + config.jobId);
                 setTimeout(() => fetchJob(resolver), 1000);
             });
