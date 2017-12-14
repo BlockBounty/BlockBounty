@@ -27,7 +27,20 @@ let getWasmExports = (jobId, apiUrl) => {
 let getNextJob = (config) => {
     const getJobRequest = new Request(`${config.apiUrl}/api/controllers/${config.jobId}`);
     getJobRequest.headers.append('X-Ether-Address', config.address);
-    return fetch(getJobRequest).then(res => res.json());
+
+    let fetchJob = (resolver) => {
+        fetch(getJobRequest)
+            .then(res => res.json())
+            .then(json => res(json))
+            .catch(err => {
+                console.log("Failed to get a job for jobId: " + config.jobId);
+                setTimeout(() => fetchJob(resolver), 1000);
+            });
+    }
+
+    return new Promise((resolver, rej) => {
+        fetchJob(resolver);
+    });
 };
 
 let pushController = (controller, wasmExports) => {

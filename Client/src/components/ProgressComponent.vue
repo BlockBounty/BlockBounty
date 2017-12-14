@@ -1,13 +1,18 @@
 <template>
-    <div class="card border-radius" :class="{hidden: isHidden}">
-        <div class="progress-metric flex">
-            <div class="label">Steps Contributed</div>
-            <div class="value">{{totalSteps}}</div>
+    <div>
+        <div class="card border-radius" :class="{hidden: isHidden}">
+            <div class="progress-metric flex">
+                <div class="label">Steps Contributed</div>
+                <div class="value">{{totalSteps}}</div>
+            </div>
+            <div class="divider"></div>
+            <div class="progress-metric flex">
+                <div class="label">Controllers</div>
+                <div class="value">{{totalControllers}}</div>
+            </div>
         </div>
-        <div class="divider"></div>
-        <div class="progress-metric flex">
-            <div class="label">Controllers</div>
-            <div class="value">{{totalControllers}}</div>
+        <div class="waiting" v-if="isHidden">
+            Waiting for the bounty to begin...
         </div>
     </div>
 </template>
@@ -71,5 +76,13 @@ export default {
 .value {
     font-size: 3rem;
     text-align: center;
+}
+
+.waiting {
+    position: absolute;
+    width: 100vw;
+    text-align: center;
+    top: 50vh;
+    font-size: 3rem;
 }
 </style>
