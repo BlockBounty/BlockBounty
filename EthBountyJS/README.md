@@ -1,8 +1,13 @@
 eth-bounty   
 A library for paying a pool of money to people
 
-Before doing anything with the library, configure the module by pointing it at an environment.
-local(_dbpath, cb) and ropsten(_dbpath, truffleConfig, cb) are supported right now.
+Before doing anything with the library, configure the module. Call `config` with an object of the form
+`{
+    environment: "local",
+    truffleConfig: require('truffle.js'), //wherever you keep a truffle.js
+    dbpath: './'
+}`
+Evironment can also be "ropsten".
 
 Then call newBounty(totalWorkRequired, totalJobPayout, cb) to deploy a contract to the blockchain and to start a bounty on that contract (These are two separate transactions so it can take a while). The callback has the signature of (error) and fires when the bounty has been started on the blockchain. The jobId is returned immediately.
 

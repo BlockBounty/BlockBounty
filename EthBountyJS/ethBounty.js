@@ -40,7 +40,7 @@ let configureWithProvider = (newProvider, cb) => {
             gas: 4512388, //a little below prod
             gasPrice: 100000000000 //realistic prod
         });
-        fs.readFile(dbpath + "number.txt", 'utf8', (err, data) => {
+        fs.readFile(dbpath + "number.txt", 'utf8', (err, data) => { //this is a hack and also doesn't account for environment
             if (!err && data) {
                 jobId = parseInt(data, 10);
             }
@@ -55,7 +55,7 @@ let newBounty = (totalWorkRequired, totalJobPayout, cb) => {
     }
     let myJobId = jobId;
     jobId++;
-    fs.writeFileSync(dbpath + "number.txt", jobId);
+    fs.writeFileSync(dbpath + "number.txt", jobId); //this is a hack and also doesn't account for environment
     BountyContractSchema.new().then(deployedInstance => {
         console.log("deployed at address", deployedInstance.address);
         db.run('INSERT INTO JOBS (jobId, address) VALUES (?, ?)', myJobId, deployedInstance.address);
