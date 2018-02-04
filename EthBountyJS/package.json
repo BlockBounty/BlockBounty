@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "(cd ../BountyContract/ && truffle compile && cp build/contracts/BlockBounty.json ../EthBountyJS) && node ./demo/main.ts",
-    "ganache-cli": "ganache-cli"
+    "ganache-cli": "ganache-cli",
+    "truffle": "truffle"
   },
   "author": "macrochip",
   "dependencies": {
@@ -16,8 +17,10 @@
   },
   "devDependencies": {
     "@types/node": "^8.0.53",
-    "hapi": "^16.6.2",
     "ganache-cli": "^6.0.3",
+    "hapi": "^16.6.2",
+    "truffle": "4.0.6",
+    "truffle-hdwallet-provider": "0.0.3",
     "typescript": "^2.6.2"
   }
 }
