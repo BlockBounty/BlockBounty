@@ -43,3 +43,10 @@ We had to constantly think of attack vectors.
 Thinking in a decentralized fashion. We had many long conversations about how certain things could be implemented
     -Knowing how to pay out users properly
 Knowing when to have things on chain vs off chain
+
+client
+==========
+Need to keep wasm in source control
+Need to give extra memory to the wasm module
+Need to use that extra memory in the wasm module
+Need a reset so that the data structures in the wasm module can be reused for new controllers
