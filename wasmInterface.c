@@ -9,6 +9,12 @@ int arrayIndex = 0;
 float floatBuffer;
 char charBuffer;
 
+void reset() {
+    pushIndex = 0;
+    stackIndex = 0;
+    arrayIndex = 0;
+}
+
 void pushFloat(float val)
 {
     data[pushIndex++] = 'f';
@@ -126,6 +132,7 @@ float next()
 
 void init(int seed)
 {
+    reset();
     i = 0;
     for (int r = 0; r < 8; r++)
     {
