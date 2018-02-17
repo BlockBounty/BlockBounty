@@ -1,3 +1,9 @@
+#define WASM_EXPORT __attribute__((visibility("default")))
+#include <math.h>
+#include <string.h>
+
+float next();
+
 const int PAGE_SIZE = 65536;
 char data[PAGE_SIZE];
 int pushIndex = 0;
@@ -15,7 +21,7 @@ void reset() {
     arrayIndex = 0;
 }
 
-void pushFloat(float val)
+void WASM_EXPORT pushFloat(float val)
 {
     data[pushIndex++] = 'f';
     memcpy(data + pushIndex, &val, sizeof(float));
@@ -28,7 +34,7 @@ float getFloat(int dataIndex)
     return floatBuffer;
 }
 
-void pushByte(int byte)
+void WASM_EXPORT pushByte(int byte)
 {
     data[pushIndex] = (char)byte;
     pushIndex++;
@@ -77,6 +83,10 @@ float postfix()
                 opResult = n1 / n2;
             }
 
+            if (!isfinite(opResult)) {
+                return next();
+            }
+
             stack[stackIndex - 2] = opResult;
 
             stackIndex--;
@@ -87,12 +97,12 @@ float postfix()
     return stack[stackIndex - 1];
 }
 
-float getFitness()
+float WASM_EXPORT getFitness()
 {
     return postfix();
 }
 
-float getSteps()
+float WASM_EXPORT getSteps()
 {
     return 1.0;
 }
@@ -130,7 +140,7 @@ float next()
     return ((double)v - INT_MIN) / ((double)-1 * INT_MIN - INT_MIN);
 }
 
-void init(int seed)
+void WASM_EXPORT init(int seed)
 {
     reset();
     i = 0;
