@@ -15,6 +15,27 @@ int arrayIndex = 0;
 float floatBuffer;
 char charBuffer;
 
+struct point {
+    int x;
+    int y;
+};
+typedef point point;
+
+const int HEIGHT = 10;
+const int WIDTH = 10;
+
+point body[HEIGHT * WIDTH];
+int headIndex;
+int length;
+point berry;
+
+const point choices[4] = { {-1,0}, {0,-1}, {1,0}, {0,1} }; //West,North,East,South
+
+point makeChoice(int choiceIndex) {
+    point head = { body[headIndex].x + choices[choiceIndex].x, body[headIndex].y + choices[choiceIndex].y };
+    return head;
+}
+
 void reset() {
     pushIndex = 0;
     stackIndex = 0;
@@ -99,7 +120,11 @@ float postfix()
 
 float WASM_EXPORT getFitness()
 {
-    return postfix();
+    point startingBody[3] = { {0,5}, {1,5}, {2,5} };
+    memcpy(body, startingBody, sizeof(startingBody));
+    headIndex = 2;
+    length = 3;
+    float choice = postfix();
 }
 
 float WASM_EXPORT getSteps()
