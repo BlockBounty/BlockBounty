@@ -82,7 +82,7 @@ let start = (config) => {
             Promise.resolve({ controller: res.controller, seed: res.seed, controllerId: res.id, jobId: res.jobId })
         ])).then(([wasmExports, jobInfo]) => {
             pushController(jobInfo.controller, wasmExports);
-            wasmExports.init(jobInfo.seed);
+            wasmExports.init(420);
             return Promise.resolve({
                 fitness: wasmExports.getFitness(),
                 steps: wasmExports.getSteps(),
@@ -93,10 +93,6 @@ let start = (config) => {
         }).then(results => {
             postMessage(results);
             postJobResults(config.address, results, config.apiUrl);
-        }).then(() => {
-            return new Promise((res) => {
-                setInterval(res, 200);
-            });
         }).then(() => {
             start(config);
         }).catch(err => console.log(err));
