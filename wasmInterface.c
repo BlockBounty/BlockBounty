@@ -175,8 +175,8 @@ bool isCollisionWithSelf(point moveResult){
 }
 
 void placeBerry() {
-    berry.x = floor(abs(next() * WIDTH));
-    berry.y = floor(abs(next() * HEIGHT));
+    berry.x = floor(fabsf(next() * WIDTH));
+    berry.y = floor(fabsf(next() * HEIGHT));
 }
 
 float WASM_EXPORT getSteps()
