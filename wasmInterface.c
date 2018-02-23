@@ -1,8 +1,18 @@
 #define WASM_EXPORT __attribute__((visibility("default")))
 #include <math.h>
 #include <string.h>
+#include <stdbool.h>
+
+typedef struct point {
+    int x;
+    int y;
+} point;
 
 float next();
+void placeBerry();
+bool isCollision(point moveResult);
+bool isCollisionWithWall(point moveResult);
+bool isCollisionWithSelf(point moveResult);
 
 const int PAGE_SIZE = 65536;
 char data[PAGE_SIZE];
@@ -14,12 +24,6 @@ int arrayIndex = 0;
 
 float floatBuffer;
 char charBuffer;
-
-struct point {
-    int x;
-    int y;
-};
-typedef point point;
 
 const int HEIGHT = 10;
 const int WIDTH = 10;
@@ -102,6 +106,9 @@ float postfix()
             else if (current == '/')
             {
                 opResult = n1 / n2;
+            } else if (current == 'r')
+            {
+                opResult = next();
             }
 
             if (!isfinite(opResult)) {
@@ -120,11 +127,54 @@ float postfix()
 
 float WASM_EXPORT getFitness()
 {
+    float fitness = 0;
     point startingBody[3] = { {0,5}, {1,5}, {2,5} };
     memcpy(body, startingBody, sizeof(startingBody));
     headIndex = 2;
     length = 3;
-    float choice = postfix();
+    while (true) {
+        placeBerry();
+        float controllerEvaluation = postfix();
+        float percentChance = controllerEvaluation * 100.0;
+        int choice = percentChance / 25.0;
+        point moveResult = makeChoice(choice);
+        if (moveResult.x == berry.x && moveResult.y == berry.y) {
+            length++;
+            headIndex++;
+            body[headIndex].x = berry.x;
+            body[headIndex].y = berry.y;
+            fitness += 1;
+        } else if (isCollision(moveResult)) {
+            return fitness;
+        } else {
+            headIndex = (headIndex + 1) % length;
+            body[headIndex].x = moveResult.x;
+            body[headIndex].y = moveResult.y;
+        }
+    }
+}
+
+bool isCollision(point moveResult) {
+    return isCollisionWithWall(moveResult) || isCollisionWithSelf(moveResult);
+}
+
+bool isCollisionWithWall(point moveResult) {
+    return moveResult.x <= 0 || moveResult.x >= WIDTH - 1 || moveResult.y <= 0 || moveResult.y >= HEIGHT - 1;
+}
+
+bool isCollisionWithSelf(point moveResult){
+    bool foundCollision = false;
+    for (int i = 0; i < length; i++) {
+        if (body[i].x == moveResult.x && body[i].y == moveResult.y) {
+            foundCollision = true;
+        }
+    }
+    return foundCollision;
+}
+
+void placeBerry() {
+    berry.x = ((int)(next() * 100.0)) % WIDTH;
+    berry.y = ((int)(next() * 100.0)) % HEIGHT;
 }
 
 float WASM_EXPORT getSteps()
