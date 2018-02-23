@@ -1,6 +1,7 @@
 #define WASM_EXPORT __attribute__((visibility("default")))
 #include <math.h>
 #include <string.h>
+#include <stdlib.h>
 #include <stdbool.h>
 
 typedef struct point {
@@ -135,15 +136,16 @@ float WASM_EXPORT getFitness()
     while (true) {
         placeBerry();
         float controllerEvaluation = postfix();
-        float percentChance = controllerEvaluation * 100.0;
-        int choice = percentChance / 25.0;
+        int percentChance = round(controllerEvaluation * 100);
+        int choice = abs(percentChance % 4);
         point moveResult = makeChoice(choice);
+        fitness++;
         if (moveResult.x == berry.x && moveResult.y == berry.y) {
             length++;
             headIndex++;
             body[headIndex].x = berry.x;
             body[headIndex].y = berry.y;
-            fitness += 1;
+            fitness += 10;
         } else if (isCollision(moveResult)) {
             return fitness;
         } else {
@@ -173,8 +175,8 @@ bool isCollisionWithSelf(point moveResult){
 }
 
 void placeBerry() {
-    berry.x = ((int)(next() * 100.0)) % WIDTH;
-    berry.y = ((int)(next() * 100.0)) % HEIGHT;
+    berry.x = floor(abs(next() * WIDTH));
+    berry.y = floor(abs(next() * HEIGHT));
 }
 
 float WASM_EXPORT getSteps()
