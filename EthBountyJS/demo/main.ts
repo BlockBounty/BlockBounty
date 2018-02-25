@@ -42,7 +42,19 @@ server.route({
     handler: (request, reply) => {
         reply("0x0")
     }
-})
+});
+
+server.route({
+    method: 'GET',
+    path: '/api/payEveryone/{jobId}',
+    handler: (request, reply) => {
+        EB.payEveryone(request.params.jobId).then(resultTx => {
+            reply(JSON.stringify(resultTx));
+        }).catch(err => {
+            reply(err);
+        });
+    }
+});
 
 server.route({
     method: 'GET',
@@ -62,7 +74,7 @@ EB.config({
     truffleConfig: require('../../BountyContract/truffle.js'),
     dbpath: './'
 }, () => {
-    globalJobId = EB.newBounty(100, 100, (error) => {
+    globalJobId = EB.newBounty(100, (error) => {
         if (error) {
             throw error;
         }

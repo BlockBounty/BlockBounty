@@ -49,17 +49,14 @@ let configureWithProvider = (newProvider, cb) => {
     });
 };
 
-let newBounty = (totalWorkRequired, totalJobPayout, cb) => {
-    if (totalWorkRequired % WORK_BUFFER_SIZE !== 0) {
-        return cb('totalWorkRequired needs to be divisible by ' + WORK_BUFFER_SIZE);
-    }
+let newBounty = (totalJobPayout, cb) => {
     let myJobId = jobId;
     jobId++;
     fs.writeFileSync(dbpath + "number.txt", jobId); //this is a hack and also doesn't account for environment
     BountyContractSchema.new().then(deployedInstance => {
         console.log("deployed at address", deployedInstance.address);
         db.run('INSERT INTO JOBS (jobId, address) VALUES (?, ?)', myJobId, deployedInstance.address);
-        return deployedInstance.createJob(totalWorkRequired, totalJobPayout, { value: totalJobPayout });
+        return deployedInstance.createJob(totalJobPayout, { value: totalJobPayout });
     }).then(response => {
         console.log("'starting job' tx included in block:", response.receipt.blockNumber);
         cb();
@@ -141,9 +138,28 @@ let getContractAddressForJobId = (jobId, cb) => {
     });
 };
 
+let payEveryone = (jobId) => {
+    return new Promise((resolve, reject) => {
+        getContractAddressForJobId(jobId, (err, address) => {
+            if (err) {
+                return reject(err);
+            }
+            BountyContractSchema.at(address).then(deployedInstance => {
+                return deployedInstance.payEveryone();
+            }).then(response => {
+                console.log("Paid everyone for jobId", jobId);
+                resolve(response);
+            }).catch(error => {
+                reject(error);
+            });
+        });
+    });
+}
+
 module.exports = {
     newBounty,
     contribute,
     config,
-    getContractAddressForJobId
+    getContractAddressForJobId,
+    payEveryone,
 };

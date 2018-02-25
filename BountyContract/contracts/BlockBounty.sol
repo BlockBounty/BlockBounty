@@ -2,7 +2,6 @@ pragma solidity ^0.4.18;
 
 contract BlockBounty {
 
-  uint public totalWorkRequired;
   uint public totalJobPayout;
   uint public workDoneSoFar;
   address public owner;
@@ -25,31 +24,24 @@ contract BlockBounty {
     owner = msg.sender;
   }
 
-  function createJob(uint _totalWorkRequired, uint _totalJobPayout) isOwner() payable public {
+  function createJob(uint _totalJobPayout) isOwner() payable public {
     require(_totalJobPayout == msg.value);
-    totalWorkRequired = _totalWorkRequired;
     totalJobPayout = _totalJobPayout;
   }
 
   function contribute(address contributor, uint numberOfWorks) isOwner() public {
-    require(workDoneSoFar < totalWorkRequired);
     if (!contributions[contributor].isContributor) {
       contributions[contributor].isContributor = true;
       contributors.push(contributor);
     }
     contributions[contributor].contributions += numberOfWorks;
     workDoneSoFar += numberOfWorks;
-    if (workDoneSoFar >= totalWorkRequired) {
-      uint extraWork = workDoneSoFar - totalWorkRequired;
-      contributions[contributor].contributions -= extraWork;
-      payEveryone();
-    }
   }
 
-  function payEveryone() private {
+  function payEveryone() isOwner() public {
     for (uint i = 0; i < contributors.length; i++) {
       address contributor = contributors[i];
-      contributor.transfer(totalJobPayout * contributions[contributor].contributions / totalWorkRequired); //WARN: integer math leads to errors
+      contributor.transfer(totalJobPayout * contributions[contributor].contributions / workDoneSoFar); //WARN: integer math leads to errors
     }
   }
 
