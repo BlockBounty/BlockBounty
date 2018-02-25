@@ -1,6 +1,6 @@
 {
   "name": "@blockbounty/eth-bounty",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Create Generic bounties on the ethereum network",
   "main": "ethBounty.js",
   "scripts": {
