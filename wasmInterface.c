@@ -248,7 +248,19 @@ float function_east_collision_distance(void) {
 }
 
 float function_south_collision_distance(void) {
-
+    int closestThreat = INT_MAX;
+    point head = body[headIndex];
+    for (int i = 0; i < length; i++) {
+        if (body[i].x == head.x) {
+            if (body[i].y > head.y && body[i].y < closestThreat) {
+                closestThreat = body[i].y - head.y;
+            }
+        }
+    }
+    if (closestThreat == INT_MAX) {
+        closestThreat = HEIGHT - head.y;
+    }
+    return 0.0 + (closestThreat + 1);
 }
 
 float WASM_EXPORT getSteps()
