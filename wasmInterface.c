@@ -4,6 +4,21 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+float function_west_collision_distance(void);
+float function_north_collision_distance(void);
+float function_east_collision_distance(void);
+float function_south_collision_distance(void);
+
+const static struct {
+  const char *name;
+  float (*func)(void);
+} function_map [] = {
+  { "w", function_west_collision_distance },
+  { "n", function_north_collision_distance },
+  { "e", function_east_collision_distance },
+  { "s", function_south_collision_distance },
+};
+
 typedef struct point {
     int x;
     int y;
@@ -28,6 +43,8 @@ char charBuffer;
 
 const int HEIGHT = 10;
 const int WIDTH = 10;
+
+const int WEST_WALL_X = 0;
 
 point body[HEIGHT * WIDTH];
 int headIndex;
@@ -85,8 +102,15 @@ float postfix()
         else if (current == '=')
         {
             break;
-        }
-        else
+        } else if (current != '*' && current != '+' && current != '-' && current != '/') {
+            for (int i = 0; i < (sizeof(function_map) / sizeof(function_map[0])); i++) {
+                if (!strcmp(function_map[i].name, (char*) &current) && function_map[i].func) {
+                    stack[stackIndex] = function_map[i].func();
+                    stackIndex++;
+                    arrayIndex++;
+                }
+            }
+        } else
         {
             float opResult;
             float n1 = stack[stackIndex - 2];
@@ -107,9 +131,6 @@ float postfix()
             else if (current == '/')
             {
                 opResult = n1 / n2;
-            } else if (current == 'r')
-            {
-                opResult = next();
             }
 
             if (!isfinite(opResult)) {
@@ -177,6 +198,34 @@ bool isCollisionWithSelf(point moveResult){
 void placeBerry() {
     berry.x = floor(fabsf(next() * WIDTH));
     berry.y = floor(fabsf(next() * HEIGHT));
+}
+
+float function_west_collision_distance(void) {
+    int closestThreat = -1;
+    point head = body[headIndex];
+    for (int i = 0; i < length; i++) {
+        if (body[i].y == head.y) {
+            if (body[i].x < head.x && body[i].x > closestThreat) {
+                closestThreat = head.x - body[i].x;
+            }
+        }
+    }
+    if (closestThreat == -1) {
+        closestThreat = head.x + 1;
+    }
+    return 0.0 + (closestThreat + 1);
+}
+
+float function_north_collision_distance(void) {
+
+}
+
+float function_east_collision_distance(void) {
+
+}
+
+float function_south_collision_distance(void) {
+
 }
 
 float WASM_EXPORT getSteps()
