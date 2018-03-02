@@ -44,8 +44,6 @@ char charBuffer;
 const int HEIGHT = 10;
 const int WIDTH = 10;
 
-const int WEST_WALL_X = 0;
-
 point body[HEIGHT * WIDTH];
 int headIndex;
 int length;
@@ -217,7 +215,19 @@ float function_west_collision_distance(void) {
 }
 
 float function_north_collision_distance(void) {
-
+    int closestThreat = -1;
+    point head = body[headIndex];
+    for (int i = 0; i < length; i++) {
+        if (body[i].x == head.x) {
+            if (body[i].y < head.y && body[i].y > closestThreat) {
+                closestThreat = head.y - body[i].y;
+            }
+        }
+    }
+    if (closestThreat == -1) {
+        closestThreat = head.y + 1;
+    }
+    return 0.0 + (closestThreat + 1);
 }
 
 float function_east_collision_distance(void) {
