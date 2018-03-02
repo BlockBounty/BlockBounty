@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <limits.h>
 
 float function_west_collision_distance(void);
 float function_north_collision_distance(void);
@@ -30,11 +31,11 @@ bool isCollision(point moveResult);
 bool isCollisionWithWall(point moveResult);
 bool isCollisionWithSelf(point moveResult);
 
-const int PAGE_SIZE = 65536;
-char data[PAGE_SIZE];
+const int MY_PAGE_SIZE = 65536;
+char data[MY_PAGE_SIZE];
 int pushIndex = 0;
 
-float stack[PAGE_SIZE / 4];
+float stack[MY_PAGE_SIZE / 4];
 int stackIndex = 0;
 int arrayIndex = 0;
 
@@ -231,7 +232,19 @@ float function_north_collision_distance(void) {
 }
 
 float function_east_collision_distance(void) {
-
+    int closestThreat = INT_MAX;
+    point head = body[headIndex];
+    for (int i = 0; i < length; i++) {
+        if (body[i].y == head.y) {
+            if (body[i].x > head.x && body[i].x < closestThreat) {
+                closestThreat = body[i].x - head.x;
+            }
+        }
+    }
+    if (closestThreat == INT_MAX) {
+        closestThreat = WIDTH - head.x;
+    }
+    return 0.0 + (closestThreat + 1);
 }
 
 float function_south_collision_distance(void) {
@@ -250,7 +263,7 @@ float WASM_EXPORT getSteps()
 // Note: This is not compatible with the JS implementation due to
 // its alternative implementation of the left-shift operator '>>'
 
-const int INT_MIN = -2147483648;
+// const int INT_MIN = -2147483648;
 int X[8];
 int i = 0;
 
