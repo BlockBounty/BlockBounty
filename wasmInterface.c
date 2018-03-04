@@ -30,6 +30,7 @@ void placeBerry();
 bool isCollision(point moveResult);
 bool isCollisionWithWall(point moveResult);
 bool isCollisionWithSelf(point moveResult);
+bool berryIsInBody();
 
 const int MY_PAGE_SIZE = 65536;
 char data[MY_PAGE_SIZE];
@@ -197,6 +198,18 @@ bool isCollisionWithSelf(point moveResult){
 void placeBerry() {
     berry.x = floor(fabsf(next() * WIDTH));
     berry.y = floor(fabsf(next() * HEIGHT));
+    if (berryIsInBody()) {
+        placeBerry();
+    }
+}
+
+bool berryIsInBody() {
+    for (int i = 0; i < length; i++) {
+        if (body[i].x == berry.x && body[i].y == berry.y) {
+            return true;
+        }
+    }
+    return false;
 }
 
 float function_west_collision_distance(void) {
