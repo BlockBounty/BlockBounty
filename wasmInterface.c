@@ -160,9 +160,11 @@ float postfix()
     return stack[stackIndex - 1];
 }
 
+float steps = 0;
 float WASM_EXPORT getFitness()
 {
     float fitness = 0;
+    steps = 0;
     point startingBody[3] = {{0, 5}, {1, 5}, {2, 5}};
     memcpy(body, startingBody, sizeof(startingBody));
     headIndex = 2;
@@ -171,6 +173,7 @@ float WASM_EXPORT getFitness()
         placeBerry();
     while (true)
     {
+        steps++;
         float controllerEvaluation = postfix();
         int percentChance = round(controllerEvaluation * 100);
         int choice = abs(percentChance % 4);
@@ -309,7 +312,7 @@ float function_south_collision_distance(void)
 
 float WASM_EXPORT getSteps()
 {
-    return 1.0;
+    return steps;
 }
 
 // A C implementaion of the "xorshift7" algorithm by
