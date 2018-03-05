@@ -13,8 +13,8 @@ extern void console_log(int code);
 
 const static struct
 {
-  const char *name;
-  float (*func)(void);
+    const char *name;
+    float (*func)(void);
 } function_map[] = {
     {"w", function_west_collision_distance},
     {"n", function_north_collision_distance},
@@ -169,8 +169,7 @@ float WASM_EXPORT getFitness()
     memcpy(body, startingBody, sizeof(startingBody));
     headIndex = 2;
     length = 3;
-    while (true) {
-        placeBerry();
+    placeBerry();
     while (true)
     {
         steps++;
@@ -181,10 +180,8 @@ float WASM_EXPORT getFitness()
         if (moveResult.x == berry.x && moveResult.y == berry.y)
         {
             length++;
-            headIndex++;
-            body[headIndex].x = berry.x;
-            body[headIndex].y = berry.y;
             fitness += 10;
+            placeBerry();
         }
         else if (isCollision(moveResult))
         {
@@ -192,11 +189,11 @@ float WASM_EXPORT getFitness()
         }
 
         fitness++;
-            headIndex = (headIndex + 1) % length;
-            body[headIndex].x = moveResult.x;
-            body[headIndex].y = moveResult.y;
-        }
+        headIndex = (headIndex + 1) % length;
+        body[headIndex].x = moveResult.x;
+        body[headIndex].y = moveResult.y;
     }
+}
 
 point getBodySegment(int numSegmentsBehindHead)
 {
@@ -205,7 +202,7 @@ point getBodySegment(int numSegmentsBehindHead)
     {
         int arrayLength = sizeof(body) / sizeof(body[0]);
         segmentIndex = arrayLength + segmentIndex;
-}
+    }
 
     return body[segmentIndex];
 }
@@ -239,7 +236,8 @@ void placeBerry()
 {
     berry.x = floor(fabsf(next() * WIDTH));
     berry.y = floor(fabsf(next() * HEIGHT));
-    if (berryIsInBody()) {
+    while (berryIsInBody())
+    {
         placeBerry();
     }
 }
