@@ -9,6 +9,7 @@ float function_west_collision_distance(void);
 float function_north_collision_distance(void);
 float function_east_collision_distance(void);
 float function_south_collision_distance(void);
+extern console_log(int code);
 
 const static struct {
   const char *name;
@@ -50,12 +51,14 @@ point body[HEIGHT * WIDTH];
 int headIndex;
 int length;
 point berry;
+point choice;
 
 const point choices[4] = { {-1,0}, {0,-1}, {1,0}, {0,1} }; //West,North,East,South
 
 point makeChoice(int choiceIndex) {
-    point head = { body[headIndex].x + choices[choiceIndex].x, body[headIndex].y + choices[choiceIndex].y };
-    return head;
+    choice.x = body[headIndex].x + choices[choiceIndex].x;
+    choice.y = body[headIndex].y + choices[choiceIndex].y;
+    return choice;
 }
 
 void reset() {
@@ -182,10 +185,10 @@ bool isCollision(point moveResult) {
 }
 
 bool isCollisionWithWall(point moveResult) {
-    return moveResult.x <= 0 || moveResult.x >= WIDTH - 1 || moveResult.y <= 0 || moveResult.y >= HEIGHT - 1;
+    return moveResult.x < 0 || moveResult.x > WIDTH - 1 || moveResult.y < 0 || moveResult.y > HEIGHT - 1;
 }
 
-bool isCollisionWithSelf(point moveResult){
+bool isCollisionWithSelf(point moveResult) {
     bool foundCollision = false;
     for (int i = 0; i < length; i++) {
         if (body[i].x == moveResult.x && body[i].y == moveResult.y) {
