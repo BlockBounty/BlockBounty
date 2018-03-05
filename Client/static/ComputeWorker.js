@@ -92,7 +92,7 @@ let start = (config) => {
             });
         }).then(results => {
             postMessage(results);
-            postJobResults(config.address, results, config.apiUrl);
+            return postJobResults(config.address, results, config.apiUrl);
         }).then(() => {
             start(config);
         }).catch(err => console.log(err));
