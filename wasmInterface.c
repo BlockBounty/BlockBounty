@@ -9,19 +9,21 @@ float function_west_collision_distance(void);
 float function_north_collision_distance(void);
 float function_east_collision_distance(void);
 float function_south_collision_distance(void);
-extern console_log(int code);
+extern void console_log(int code);
 
-const static struct {
+const static struct
+{
   const char *name;
   float (*func)(void);
-} function_map [] = {
-  { "w", function_west_collision_distance },
-  { "n", function_north_collision_distance },
-  { "e", function_east_collision_distance },
-  { "s", function_south_collision_distance },
+} function_map[] = {
+    {"w", function_west_collision_distance},
+    {"n", function_north_collision_distance},
+    {"e", function_east_collision_distance},
+    {"s", function_south_collision_distance},
 };
 
-typedef struct point {
+typedef struct point
+{
     int x;
     int y;
 } point;
@@ -53,15 +55,17 @@ int length;
 point berry;
 point choice;
 
-const point choices[4] = { {-1,0}, {0,-1}, {1,0}, {0,1} }; //West,North,East,South
+const point choices[4] = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}}; //West,North,East,South
 
-point makeChoice(int choiceIndex) {
+point makeChoice(int choiceIndex)
+{
     choice.x = body[headIndex].x + choices[choiceIndex].x;
     choice.y = body[headIndex].y + choices[choiceIndex].y;
     return choice;
 }
 
-void reset() {
+void reset()
+{
     pushIndex = 0;
     stackIndex = 0;
     arrayIndex = 0;
@@ -105,15 +109,20 @@ float postfix()
         else if (current == '=')
         {
             break;
-        } else if (current != '*' && current != '+' && current != '-' && current != '/') {
-            for (int i = 0; i < (sizeof(function_map) / sizeof(function_map[0])); i++) {
-                if (!strcmp(function_map[i].name, (char*) &current) && function_map[i].func) {
+        }
+        else if (current != '*' && current != '+' && current != '-' && current != '/')
+        {
+            for (int i = 0; i < (sizeof(function_map) / sizeof(function_map[0])); i++)
+            {
+                if (!strcmp(function_map[i].name, (char *)&current) && function_map[i].func)
+                {
                     stack[stackIndex] = function_map[i].func();
                     stackIndex++;
                     arrayIndex++;
                 }
             }
-        } else
+        }
+        else
         {
             float opResult;
             float n1 = stack[stackIndex - 2];
@@ -136,7 +145,8 @@ float postfix()
                 opResult = n1 / n2;
             }
 
-            if (!isfinite(opResult)) {
+            if (!isfinite(opResult))
+            {
                 return next();
             }
 
@@ -153,26 +163,32 @@ float postfix()
 float WASM_EXPORT getFitness()
 {
     float fitness = 0;
-    point startingBody[3] = { {0,5}, {1,5}, {2,5} };
+    point startingBody[3] = {{0, 5}, {1, 5}, {2, 5}};
     memcpy(body, startingBody, sizeof(startingBody));
     headIndex = 2;
     length = 3;
     while (true) {
         placeBerry();
+    while (true)
+    {
         float controllerEvaluation = postfix();
         int percentChance = round(controllerEvaluation * 100);
         int choice = abs(percentChance % 4);
         point moveResult = makeChoice(choice);
-        fitness++;
-        if (moveResult.x == berry.x && moveResult.y == berry.y) {
+        if (moveResult.x == berry.x && moveResult.y == berry.y)
+        {
             length++;
             headIndex++;
             body[headIndex].x = berry.x;
             body[headIndex].y = berry.y;
             fitness += 10;
-        } else if (isCollision(moveResult)) {
+        }
+        else if (isCollision(moveResult))
+        {
             return fitness;
-        } else {
+        }
+
+        fitness++;
             headIndex = (headIndex + 1) % length;
             body[headIndex].x = moveResult.x;
             body[headIndex].y = moveResult.y;
@@ -180,15 +196,18 @@ float WASM_EXPORT getFitness()
     }
 }
 
-bool isCollision(point moveResult) {
+bool isCollision(point moveResult)
+{
     return isCollisionWithWall(moveResult) || isCollisionWithSelf(moveResult);
 }
 
-bool isCollisionWithWall(point moveResult) {
+bool isCollisionWithWall(point moveResult)
+{
     return moveResult.x < 0 || moveResult.x > WIDTH - 1 || moveResult.y < 0 || moveResult.y > HEIGHT - 1;
 }
 
-bool isCollisionWithSelf(point moveResult) {
+bool isCollisionWithSelf(point moveResult)
+{
     bool foundCollision = false;
     for (int i = 0; i < length; i++) {
         if (body[i].x == moveResult.x && body[i].y == moveResult.y) {
@@ -198,7 +217,8 @@ bool isCollisionWithSelf(point moveResult) {
     return foundCollision;
 }
 
-void placeBerry() {
+void placeBerry()
+{
     berry.x = floor(fabsf(next() * WIDTH));
     berry.y = floor(fabsf(next() * HEIGHT));
     if (berryIsInBody()) {
@@ -215,7 +235,8 @@ bool berryIsInBody() {
     return false;
 }
 
-float function_west_collision_distance(void) {
+float function_west_collision_distance(void)
+{
     int closestThreat = -1;
     point head = body[headIndex];
     for (int i = 0; i < length; i++) {
@@ -225,13 +246,15 @@ float function_west_collision_distance(void) {
             }
         }
     }
-    if (closestThreat == -1) {
+    if (closestThreat == -1)
+    {
         closestThreat = head.x + 1;
     }
     return 0.0 + (closestThreat + 1);
 }
 
-float function_north_collision_distance(void) {
+float function_north_collision_distance(void)
+{
     int closestThreat = -1;
     point head = body[headIndex];
     for (int i = 0; i < length; i++) {
@@ -241,13 +264,15 @@ float function_north_collision_distance(void) {
             }
         }
     }
-    if (closestThreat == -1) {
+    if (closestThreat == -1)
+    {
         closestThreat = head.y + 1;
     }
     return 0.0 + (closestThreat + 1);
 }
 
-float function_east_collision_distance(void) {
+float function_east_collision_distance(void)
+{
     int closestThreat = INT_MAX;
     point head = body[headIndex];
     for (int i = 0; i < length; i++) {
@@ -257,13 +282,15 @@ float function_east_collision_distance(void) {
             }
         }
     }
-    if (closestThreat == INT_MAX) {
+    if (closestThreat == INT_MAX)
+    {
         closestThreat = WIDTH - head.x;
     }
     return 0.0 + (closestThreat + 1);
 }
 
-float function_south_collision_distance(void) {
+float function_south_collision_distance(void)
+{
     int closestThreat = INT_MAX;
     point head = body[headIndex];
     for (int i = 0; i < length; i++) {
@@ -273,7 +300,8 @@ float function_south_collision_distance(void) {
             }
         }
     }
-    if (closestThreat == INT_MAX) {
+    if (closestThreat == INT_MAX)
+    {
         closestThreat = HEIGHT - head.y;
     }
     return 0.0 + (closestThreat + 1);
