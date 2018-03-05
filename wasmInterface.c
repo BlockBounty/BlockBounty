@@ -197,6 +197,17 @@ float WASM_EXPORT getFitness()
             body[headIndex].y = moveResult.y;
         }
     }
+
+point getBodySegment(int numSegmentsBehindHead)
+{
+    int segmentIndex = headIndex - numSegmentsBehindHead;
+    if (segmentIndex < 0)
+    {
+        int arrayLength = sizeof(body) / sizeof(body[0]);
+        segmentIndex = arrayLength + segmentIndex;
+}
+
+    return body[segmentIndex];
 }
 
 bool isCollision(point moveResult)
@@ -212,8 +223,12 @@ bool isCollisionWithWall(point moveResult)
 bool isCollisionWithSelf(point moveResult)
 {
     bool foundCollision = false;
-    for (int i = 0; i < length; i++) {
-        if (body[i].x == moveResult.x && body[i].y == moveResult.y) {
+    for (int i = 0; i < length; i++)
+    {
+        point segment = getBodySegment(i);
+
+        if (segment.x == moveResult.x && segment.y == moveResult.y)
+        {
             foundCollision = true;
         }
     }
@@ -229,9 +244,14 @@ void placeBerry()
     }
 }
 
-bool berryIsInBody() {
-    for (int i = 0; i < length; i++) {
-        if (body[i].x == berry.x && body[i].y == berry.y) {
+bool berryIsInBody()
+{
+    for (int i = 0; i < length; i++)
+    {
+        point segment = getBodySegment(i);
+
+        if (segment.x == berry.x && segment.y == berry.y)
+        {
             return true;
         }
     }
@@ -242,10 +262,15 @@ float function_west_collision_distance(void)
 {
     int closestThreat = -1;
     point head = body[headIndex];
-    for (int i = 0; i < length; i++) {
-        if (body[i].y == head.y) {
-            if (body[i].x < head.x && body[i].x > closestThreat) {
-                closestThreat = head.x - body[i].x;
+    for (int i = 0; i < length; i++)
+    {
+        point segment = getBodySegment(i);
+
+        if (segment.y == head.y)
+        {
+            if (segment.x < head.x && segment.x > closestThreat)
+            {
+                closestThreat = head.x - segment.x;
             }
         }
     }
@@ -260,10 +285,15 @@ float function_north_collision_distance(void)
 {
     int closestThreat = -1;
     point head = body[headIndex];
-    for (int i = 0; i < length; i++) {
-        if (body[i].x == head.x) {
-            if (body[i].y < head.y && body[i].y > closestThreat) {
-                closestThreat = head.y - body[i].y;
+    for (int i = 0; i < length; i++)
+    {
+        point segment = getBodySegment(i);
+
+        if (segment.x == head.x)
+        {
+            if (segment.y < head.y && segment.y > closestThreat)
+            {
+                closestThreat = head.y - segment.y;
             }
         }
     }
@@ -278,10 +308,15 @@ float function_east_collision_distance(void)
 {
     int closestThreat = INT_MAX;
     point head = body[headIndex];
-    for (int i = 0; i < length; i++) {
-        if (body[i].y == head.y) {
-            if (body[i].x > head.x && body[i].x < closestThreat) {
-                closestThreat = body[i].x - head.x;
+    for (int i = 0; i < length; i++)
+    {
+        point segment = getBodySegment(i);
+
+        if (segment.y == head.y)
+        {
+            if (segment.x > head.x && segment.x < closestThreat)
+            {
+                closestThreat = segment.x - head.x;
             }
         }
     }
@@ -296,10 +331,15 @@ float function_south_collision_distance(void)
 {
     int closestThreat = INT_MAX;
     point head = body[headIndex];
-    for (int i = 0; i < length; i++) {
-        if (body[i].x == head.x) {
-            if (body[i].y > head.y && body[i].y < closestThreat) {
-                closestThreat = body[i].y - head.y;
+    for (int i = 0; i < length; i++)
+    {
+        point segment = getBodySegment(i);
+
+        if (segment.x == head.x)
+        {
+            if (segment.y > head.y && segment.y < closestThreat)
+            {
+                closestThreat = segment.y - head.y;
             }
         }
     }
