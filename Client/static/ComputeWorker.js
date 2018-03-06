@@ -67,7 +67,19 @@ let pushController = (controller, wasmExports) => {
     wasmExports.pushByte('='.charCodeAt(0));
 };
 
+let batchedJobResults = [];
 let postJobResults = (address, results, apiUrl) => {
+    if (batchedJobs.length > 0) {
+        batchedJobResults.push({
+            fitness: results.fitness,
+            steps: results.steps,
+            seed: results.seed,
+            controllerId: results.controllerId,
+        });
+
+        return;
+    }
+
     let headers = new Headers();
     headers.append('X-Ether-Address', address);
     headers.append('Content-Type', 'application/json');
@@ -75,14 +87,9 @@ let postJobResults = (address, results, apiUrl) => {
         method: 'POST',
         headers,
         mode: 'cors',
-        body: JSON.stringify({
-            fitness: results.fitness,
-            steps: results.steps,
-            seed: results.seed,
-            jobId: results.jobId,
-        }),
+        body: JSON.stringify(batchedJobResults),
     };
-    const postResultsRequest = new Request(`${apiUrl}/api/fitness/${results.controllerId}`, postInit);
+    const postResultsRequest = new Request(`${apiUrl}/api/fitness/${results.jobId}`, postInit);
     return fetch(postResultsRequest);
 }
 
