@@ -1,3 +1,5 @@
+const DEFAULT_BATCH_SIZE = 5;
+
 let wasmExports, currentJobId;
 
 let getWasmExports = (jobId, apiUrl) => {
@@ -30,7 +32,7 @@ let getNextJob = (config) => {
         return Promise.resolve(batchedJobs.pop());
     }
 
-    const getJobRequest = new Request(`${config.apiUrl}/api/controllers/${config.jobId}`);
+    const getJobRequest = new Request(`${config.apiUrl}/api/controllers/${config.jobId}?batchSize=${DEFAULT_BATCH_SIZE}`);
     getJobRequest.headers.append('X-Ether-Address', config.address);
 
     let fetchJob = (resolver) => {
