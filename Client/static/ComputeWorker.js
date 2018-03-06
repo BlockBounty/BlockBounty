@@ -24,14 +24,23 @@ let getWasmExports = (jobId, apiUrl) => {
         });
 };
 
+let batchedJobs = [];
 let getNextJob = (config) => {
+    if (batchedJobs.length != 0) {
+        return Promise.resolve(batchedJobs.pop());
+    }
+
     const getJobRequest = new Request(`${config.apiUrl}/api/controllers/${config.jobId}`);
     getJobRequest.headers.append('X-Ether-Address', config.address);
 
     let fetchJob = (resolver) => {
         fetch(getJobRequest)
             .then(res => res.json())
-            .then(json => resolver(json))
+            .then(json => {
+                json.controllers.forEach(c => batchedJobs.push(c));
+
+                resolver(batchedJobs.pop());
+            })
             .catch(err => {
                 console.log(err);
                 console.log("Failed to get a job for jobId: " + config.jobId);
