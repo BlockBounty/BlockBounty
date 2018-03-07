@@ -65,7 +65,7 @@ point makeChoice(int choiceIndex)
     return choice;
 }
 
-void reset()
+void resetForPostFix()
 {
     pushIndex = 0;
     stackIndex = 0;
@@ -99,6 +99,7 @@ int getByte(int dataIndex)
 
 float postfix()
 {
+    resetForPostFix();
     while (1)
     {
         int current = getByte(arrayIndex);
@@ -178,7 +179,7 @@ float WASM_EXPORT update()
     {
         steps++;
         float controllerEvaluation = postfix();
-        int percentChance = round(controllerEvaluation * 100);
+    int percentChance = round(controllerEvaluation * 1000000);
         int choice = abs(percentChance % 4);
         point moveResult = makeChoice(choice);
         if (moveResult.x == berry.x && moveResult.y == berry.y)
@@ -409,7 +410,7 @@ float next()
 
 void WASM_EXPORT init(int seed)
 {
-    reset();
+    resetForPostFix();
     i = 0;
     for (int r = 0; r < 8; r++)
     {
