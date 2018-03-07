@@ -48,17 +48,18 @@ char charBuffer;
 
 const int HEIGHT = 10;
 const int WIDTH = 10;
+const int MAX_BODY_LENGTH = HEIGHT * WIDTH;
 
-point body[HEIGHT * WIDTH];
+point body[MAX_BODY_LENGTH];
 int headIndex;
 int length;
 point berry;
-point choice;
 
 const point choices[4] = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}}; //West,North,East,South
 
 point makeChoice(int choiceIndex)
 {
+    point choice;
     choice.x = body[headIndex].x + choices[choiceIndex].x;
     choice.y = body[headIndex].y + choices[choiceIndex].y;
     return choice;
@@ -189,7 +190,7 @@ float WASM_EXPORT getFitness()
         }
 
         fitness++;
-        headIndex = (headIndex + 1) % length;
+    headIndex = (headIndex + 1) % MAX_BODY_LENGTH;
         body[headIndex].x = moveResult.x;
         body[headIndex].y = moveResult.y;
     }
