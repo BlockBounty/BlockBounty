@@ -162,16 +162,19 @@ float postfix()
 }
 
 float steps = 0;
-float WASM_EXPORT getFitness()
-{
     float fitness = 0;
+void WASM_EXPORT start()
+{
+    fitness = 0;
     steps = 0;
     point startingBody[3] = {{0, 5}, {1, 5}, {2, 5}};
     memcpy(body, startingBody, sizeof(startingBody));
     headIndex = 2;
     length = 3;
     placeBerry();
-    while (true)
+}
+
+float WASM_EXPORT update()
     {
         steps++;
         float controllerEvaluation = postfix();
@@ -193,6 +196,23 @@ float WASM_EXPORT getFitness()
     headIndex = (headIndex + 1) % MAX_BODY_LENGTH;
         body[headIndex].x = moveResult.x;
         body[headIndex].y = moveResult.y;
+
+    return 0;
+}
+
+float WASM_EXPORT getFitness()
+{
+    start();
+    while (true)
+    {
+        float result = update();
+        if (result != 0)
+        {
+            return result;
+        }
+    }
+}
+
     }
 }
 
