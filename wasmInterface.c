@@ -204,7 +204,8 @@ float WASM_EXPORT update()
 float WASM_EXPORT getFitness()
 {
     start();
-    while (true)
+    int MAX_ITER = MAX_BODY_LENGTH * MAX_BODY_LENGTH;
+    for (int iter = 0; iter < MAX_ITER; iter++)
     {
         float result = update();
         if (result != 0)
