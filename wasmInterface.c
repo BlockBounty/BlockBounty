@@ -215,9 +215,6 @@ float WASM_EXPORT getFitness()
     }
 }
 
-    }
-}
-
 point getBodySegment(int numSegmentsBehindHead)
 {
     int segmentIndex = headIndex - numSegmentsBehindHead;

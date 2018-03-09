@@ -50,3 +50,9 @@ Need to keep wasm in source control
 Need to give extra memory to the wasm module
 Need to use that extra memory in the wasm module
 Need a reset so that the data structures in the wasm module can be reused for new controllers
+
+
+
+why is the berry never at 1?
+incorporate berry distance into algo
+we should make sure our fitness proportional works
