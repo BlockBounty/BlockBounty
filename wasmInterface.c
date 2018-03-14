@@ -9,6 +9,10 @@ float function_west_collision_distance(void);
 float function_north_collision_distance(void);
 float function_east_collision_distance(void);
 float function_south_collision_distance(void);
+float function_west_berry_distance(void);
+float function_north_berry_distance(void);
+float function_east_berry_distance(void);
+float function_south_berry_distance(void);
 extern void console_log(int code);
 
 const static struct
@@ -20,6 +24,10 @@ const static struct
     {"n", function_north_collision_distance},
     {"e", function_east_collision_distance},
     {"s", function_south_collision_distance},
+    {"W", function_west_berry_distance},
+    {"N", function_north_berry_distance},
+    {"E", function_east_berry_distance},
+    {"S", function_south_berry_distance},
 };
 
 typedef struct point
@@ -185,7 +193,7 @@ float WASM_EXPORT update()
         if (moveResult.x == berry.x && moveResult.y == berry.y)
         {
             length++;
-            fitness += 10;
+            fitness += 30;
             placeBerry();
         }
         else if (isCollision(moveResult))
@@ -366,6 +374,58 @@ float function_south_collision_distance(void)
         closestThreat = HEIGHT - head.y;
     }
     return 0.0 + (closestThreat + 1);
+}
+
+float function_west_berry_distance(void) {
+    int berryDistance = INT_MAX;
+    point head = body[headIndex];
+
+    if (berry.x < head.x)
+    {
+        berryDistance = head.x - berry.x;
+    } else {
+        berryDistance = 0;
+    }
+    return 0.0 + (berryDistance + 1);
+}
+
+float function_north_berry_distance(void) {
+    int berryDistance = INT_MAX;
+    point head = body[headIndex];
+
+    if (berry.y < head.y)
+    {
+        berryDistance = head.y - berry.y;
+    } else {
+        berryDistance = 0;
+    }
+    return 0.0 + (berryDistance + 1);
+}
+
+float function_east_berry_distance(void) {
+    int berryDistance = INT_MAX;
+    point head = body[headIndex];
+
+    if (berry.x > head.x)
+    {
+        berryDistance = berry.x - head.x;
+    } else {
+        berryDistance = 0;
+    }
+    return 0.0 + (berryDistance + 1);
+}
+
+float function_south_berry_distance(void) {
+    int berryDistance = INT_MAX;
+    point head = body[headIndex];
+
+    if (berry.y > head.y)
+    {
+        berryDistance = berry.y - head.y;
+    } else {
+        berryDistance = 0;
+    }
+    return 0.0 + (berryDistance + 1);
 }
 
 float WASM_EXPORT getSteps()
