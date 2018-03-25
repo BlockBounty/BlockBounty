@@ -7,7 +7,7 @@
       </div>
       <div class="name">Block Bounty</div>
       <div class="flex"></div>
-      <div class="new-bounty border-radius" @click="showCreateBounty">+ Bounty</div>
+      <div class="new-bounty border-radius" @click="toggleCreateBounty">{{ toggleCreateBountyMessage }}</div>
     </div>
     <ConfigComponent v-if="showingProgress" />
     <ProgressComponent v-if="showingProgress" />
@@ -28,10 +28,12 @@ ConfigService.getConfig().then(config => {
 
 let model = {
   showingProgress: true,
-  showCreateBounty: () => {
+  toggleCreateBounty: () => {
     model.showingProgress = !model.showingProgress;
+    model.toggleCreateBountyMessage = model.showingProgress ? "Create AI" : "Earn ETH";
   },
-  jobId: 0
+  jobId: 0,
+  toggleCreateBountyMessage: "Create AI",
 };
 
 export default {
