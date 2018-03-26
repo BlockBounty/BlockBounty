@@ -5,8 +5,6 @@
         <input class="border-radius" type="text" @keyup.enter="onSubmit" v-model="address" />
         <div class="header">Enter JobId you want to contribute to</div>
         <input class="border-radius" type="text" @keyup.enter="onSubmit" v-model="jobId" />
-        <div class="header">Enter API Server Url</div>
-        <input class="border-radius" type="text" @keyup.enter="onSubmit" v-model="apiUrl" />
     </div>
 </template>
 
@@ -22,7 +20,7 @@ let onSubmit = () => {
         promptResolver({
             address: model.address,
             jobId: model.jobId,
-            apiUrl: model.apiUrl
+            apiUrl: process.env.API_URL,
         });
         promptResolver = null;
         model.isHidden = true;
@@ -39,7 +37,6 @@ let model = {
     isAdvanced: false,
     address: '',
     jobId: 1,
-    apiUrl: 'http://localhost:8089',
     onSubmit,
     toggleAdvanced
 };
@@ -88,7 +85,7 @@ export default {
 }
 
 .card.advanced {
-    height: 19rem;
+    height: 14rem;
 }
 
 .header {

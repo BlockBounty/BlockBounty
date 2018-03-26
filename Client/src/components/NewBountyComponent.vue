@@ -32,7 +32,7 @@
 <script>
 
 let getTopFitness = () => {
-    fetch(`http://localhost:8089/api/jobs/${model.jobId}/progress`).then(res => {
+    fetch(`${process.env.API_URL}/api/jobs/${model.jobId}/progress`).then(res => {
         return res.json();
     }).then(json => {
         model.topFitness = json;
@@ -41,7 +41,7 @@ let getTopFitness = () => {
 
 let model = {
     submitBounty: () => {
-        fetch('http://localhost:8089/api/jobs', { method: 'POST' })
+        fetch(`${process.env.API_URL}/api/jobs`, { method: 'POST' })
             .then(res => res.json())
             .then(json => model.jobId = json.jobId);
     },
