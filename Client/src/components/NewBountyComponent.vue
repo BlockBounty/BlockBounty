@@ -1,16 +1,16 @@
 <template>
     <div class="card border-radius" v-if="jobId == null">
-        <div>
+        <!-- <div>
             <div>Number of works to purchase:</div>
             <input style="display: block" type="number" />
         </div>
         <div>
             <div>Total purchase amount (this is the pool of money that workers work for):</div>
             <input style="display: block" type="number" />
-        </div>
+        </div> -->
         <div>
             <div>WASM code to run:</div>
-            <input type=file accept=".wasm" />
+            <input id="wasm" type=file accept=".wasm" />
         </div>
         <div>
             <button class="submit-bounty border-radius" @click="submitBounty">Submit bounty</button>
@@ -41,9 +41,15 @@ let getTopFitness = () => {
 
 let model = {
     submitBounty: () => {
-        fetch(`${process.env.API_URL}/api/jobs`, { method: 'POST' })
-            .then(res => res.json())
-            .then(json => model.jobId = json.jobId);
+        fetch(`${process.env.API_URL}/api/jobs`, { 
+            method: 'POST', 
+            headers: {
+                "Content-Type": "multipart/form-data"
+            },
+            body: document.getElementById('wasm').files[0],
+        })
+        .then(res => res.json())
+        .then(json => model.jobId = json.jobId);
     },
     jobId: null,
     getTopFitness,
