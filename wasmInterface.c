@@ -206,7 +206,7 @@ float WASM_EXPORT update()
         body[headIndex].x = moveResult.x;
         body[headIndex].y = moveResult.y;
 
-    return 0;
+    return -1;
 }
 
 float WASM_EXPORT getFitness()
@@ -216,7 +216,7 @@ float WASM_EXPORT getFitness()
     for (int iter = 0; iter < MAX_ITER; iter++)
     {
         float result = update();
-        if (result != 0)
+        if (result != -1)
         {
             return result;
         }
