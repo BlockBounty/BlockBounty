@@ -187,24 +187,22 @@ float WASM_EXPORT update()
     {
         steps++;
         float controllerEvaluation = postfix();
-    int percentChance = round(controllerEvaluation * 1000000);
+        int percentChance = round(controllerEvaluation * 1000000);
         int choice = abs(percentChance % 4);
         point moveResult = makeChoice(choice);
-        if (moveResult.x == berry.x && moveResult.y == berry.y)
-        {
+        headIndex = (headIndex + 1) % MAX_BODY_LENGTH;
+        body[headIndex].x = moveResult.x;
+        body[headIndex].y = moveResult.y;
+        
+        if (moveResult.x == berry.x && moveResult.y == berry.y) {
             length++;
             fitness += 30;
             placeBerry();
-        }
-        else if (isCollision(moveResult))
-        {
+        } else if (isCollision(moveResult)) {
             return fitness;
         }
 
         fitness++;
-    headIndex = (headIndex + 1) % MAX_BODY_LENGTH;
-        body[headIndex].x = moveResult.x;
-        body[headIndex].y = moveResult.y;
 
     return -1;
 }
