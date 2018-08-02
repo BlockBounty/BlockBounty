@@ -36,6 +36,7 @@ typedef struct point
     int y;
 } point;
 
+point getBodySegment(int numSegmentsBehindHead);
 float next();
 void placeBerry();
 bool isCollision(point moveResult);
@@ -59,9 +60,30 @@ const int WIDTH = 10;
 const int MAX_BODY_LENGTH = HEIGHT * WIDTH;
 
 point body[MAX_BODY_LENGTH];
+int WASM_EXPORT getBodyX(int segNum) {
+  return getBodySegment(segNum).x;
+}
+int WASM_EXPORT getBodyY(int segNum) {
+  return getBodySegment(segNum).y;
+}
+
 int headIndex;
+int WASM_EXPORT getHeadIndex() {
+  return headIndex;
+}
+
 int length;
+int WASM_EXPORT getLength() {
+  return length;
+}
+
 point berry;
+int WASM_EXPORT getBerryX() {
+  return berry.x;
+}
+int WASM_EXPORT getBerryY() {
+  return berry.y;
+}
 
 const point choices[4] = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}}; //West,North,East,South
 
@@ -193,7 +215,7 @@ float WASM_EXPORT update()
         headIndex = (headIndex + 1) % MAX_BODY_LENGTH;
         body[headIndex].x = moveResult.x;
         body[headIndex].y = moveResult.y;
-        
+
         if (moveResult.x == berry.x && moveResult.y == berry.y) {
             length++;
             fitness += 30;
@@ -203,7 +225,7 @@ float WASM_EXPORT update()
         }
 
         fitness++;
-
+        
     return -1;
 }
 
