@@ -1,4 +1,4 @@
-const DEFAULT_BATCH_SIZE = 5;
+const DEFAULT_BATCH_SIZE = 100;
 
 let wasmExports, currentJobId;
 

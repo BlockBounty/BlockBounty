@@ -6,8 +6,8 @@
         <div>B</div>
       </div>
       <div class="name">Block Bounty</div>
-      <div class="flex"></div>
-      <div class="new-bounty border-radius" @click="toggleCreateBounty">{{ toggleCreateBountyMessage }}</div>
+      <!-- <div class="flex"></div> -->
+      <!-- <div class="new-bounty border-radius" @click="toggleCreateBounty">{{ toggleCreateBountyMessage }}</div> -->
     </div>
     <ConfigComponent v-if="showingProgress" />
     <ProgressComponent v-if="showingProgress" />
@@ -103,6 +103,12 @@ export default {
 .name {
   font-size: 4rem;
   color: #d8d8e4;
+}
+
+@media only screen and (max-width: 480px) {
+  .name {
+    font-size: 250%;
+  }
 }
 
 .new-bounty {
